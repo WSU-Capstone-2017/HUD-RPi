@@ -12,13 +12,23 @@ Hardware Required:
 Step 1: Purchase CanaKit - Raspberry Pi3 Complete Starter Kit-32 GB Edition
 	Install Raspbian (Comes preinstalled on SD card included within CanaKit)
 Step 2: Run terminal. Update and upgrade the RPi
+
 	# sudo apt-get update
+	
 	#  sudo apt-get upgrade
+	
 	#  sudo apt-get autoremove
+	
 	#  sudo reboot
+	
 Step 3: Run terminal upon restart. Install components.
+
 	#  sudo apt-get install python-serial
+	
 	#  sudo apt-get install bluetooth bluez-utils blueman
+	
 	#  sudo apt-get install python-wxgtk2.8 python-wxtools wx2.8-i18n libwxgtk2.8-dev
+	
 	#  sudo apt-get install git-core
+	
 	#  sudo reboot 
