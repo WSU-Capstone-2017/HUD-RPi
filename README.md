@@ -10,10 +10,12 @@ Hardware Required:
 7. Keyboard
 
 Step 1: Purchase CanaKit - Raspberry Pi3 Complete Starter Kit-32 GB Edition
+
 	Install Raspbian (Comes preinstalled on SD card included within CanaKit)
+	
 Step 2: Run terminal. Update and upgrade the RPi
 
-	# sudo apt-get update
+	#  sudo apt-get update
 	
 	#  sudo apt-get upgrade
 	
