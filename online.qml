@@ -5,7 +5,7 @@ Rectangle {
     color: "blue"
 
     Text {
-        id: navigationAndInfoText
+        id: onlineText
         anchors.verticalCenter: parent.verticalCenter
         anchors.horizontalCenter: parent.horizontalCenter
         font.bold: true

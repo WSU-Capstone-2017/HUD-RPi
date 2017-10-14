@@ -5,7 +5,7 @@ Rectangle {
     color: "green"
 
     Text {
-        id: navigationAndInfoText
+        id: carInformationText
         anchors.verticalCenter: parent.verticalCenter
         anchors.horizontalCenter: parent.horizontalCenter
         font.bold: true
