@@ -116,7 +116,7 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
 ##################################################### For QA
-        th = Thread(target=self.instrument_readings)
+        th = Thread(target=self.instrument_readings) #progress bar moves
         th.start()
 ##################################################################
     def retranslateUi(self, MainWindow):
