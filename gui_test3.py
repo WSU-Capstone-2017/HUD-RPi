@@ -1,7 +1,7 @@
 import sys
 import time
 from threading import Thread
-import obd
+#import obd
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 

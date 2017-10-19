@@ -6,10 +6,10 @@
 #
 # WARNING! All changes made in this file will be lost!
 
-from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5 import QtQuickWidgets
 
+from PyQt5 import QtCore, QtGui, QtWidgets, QtQuickWidgets
 from PyQt5.QtCore import QUrl
+
 
 import sys
 
