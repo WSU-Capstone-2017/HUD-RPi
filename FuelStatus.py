@@ -1,7 +1,7 @@
 import sys
 import time
 from threading import Thread
-#import obd
+import obd
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
@@ -86,88 +86,93 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         MainWindow.setStatusBar(self.statusbar)
 
         self.retranslateUi(MainWindow)
-        self.fuelReading(MainWindow)
+        #self.fuelReading(MainWindow)#Grabs fuelReading def
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
+        self.retranslateUi(MainWindow)
+        QtCore.QMetaObject.connectSlotsByName(MainWindow)
+
+        th = Thread(target=self.fuelReading)
+        th.start()
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
-
-    def fuelReading(self, MainWindow):
-        #connection = obd.OBD()
-        #fuelCmd = obd.commands.FUEL_LEVEL
-        #while 1:
-            #fuelResponse = connection.query(fuelCmd)
-            #fuelString = str(fuelResponse.value).split()
-            #while fuelString[0] != "None":
-                #fuel = float(fuelString[0])
-        fuel = 33
-        if fuel <= 10:
-            self.progressBar_2.setProperty("value", 100)
-        elif fuel <= 20:
-            self.progressBar.setProperty("value", 100)
-            self.progressBar_2.setProperty("value", 100)
-        elif fuel <= 30:
-            self.progressBar_3.setProperty("value", 100)
-            self.progressBar.setProperty("value", 100)
-            self.progressBar_2.setProperty("value", 100)
-        elif fuel <= 40:
-            self.progressBar_4.setProperty("value", 100)
-            self.progressBar_3.setProperty("value", 100)
-            self.progressBar.setProperty("value", 100)
-            self.progressBar_2.setProperty("value", 100)
-        elif fuel <= 50:
-            self.progressBar_5.setProperty("value", 100)
-            self.progressBar_4.setProperty("value", 100)
-            self.progressBar_3.setProperty("value", 100)
-            self.progressBar.setProperty("value", 100)
-            self.progressBar_2.setProperty("value", 100)
-        elif fuel <= 60:
-            self.progressBar_6.setProperty("value", 100)
-            self.progressBar_5.setProperty("value", 100)
-            self.progressBar_4.setProperty("value", 100)
-            self.progressBar_3.setProperty("value", 100)
-            self.progressBar.setProperty("value", 100)
-            self.progressBar_2.setProperty("value", 100)
-        elif fuel <= 70:
-            self.progressBar_7.setProperty("value", 100)
-            self.progressBar_6.setProperty("value", 100)
-            self.progressBar_5.setProperty("value", 100)
-            self.progressBar_4.setProperty("value", 100)
-            self.progressBar_3.setProperty("value", 100)
-            self.progressBar.setProperty("value", 100)
-            self.progressBar_2.setProperty("value", 100)
-        elif fuel <= 80:
-            self.progressBar_8.setProperty("value", 100)
-            self.progressBar_7.setProperty("value", 100)
-            self.progressBar_6.setProperty("value", 100)
-            self.progressBar_5.setProperty("value", 100)
-            self.progressBar_4.setProperty("value", 100)
-            self.progressBar_3.setProperty("value", 100)
-            self.progressBar.setProperty("value", 100)
-            self.progressBar_2.setProperty("value", 100)
-        elif fuel <= 90:
-            self.progressBar_9.setProperty("value", 100)
-            self.progressBar_8.setProperty("value", 100)
-            self.progressBar_7.setProperty("value", 100)
-            self.progressBar_6.setProperty("value", 100)
-            self.progressBar_5.setProperty("value", 100)
-            self.progressBar_4.setProperty("value", 100)
-            self.progressBar_3.setProperty("value", 100)
-            self.progressBar.setProperty("value", 100)
-            self.progressBar_2.setProperty("value", 100)
-        elif fuel <= 100:
-            self.progressBar_10.setProperty("value", 100)
-            self.progressBar_9.setProperty("value", 100)
-            self.progressBar_8.setProperty("value", 100)
-            self.progressBar_7.setProperty("value", 100)
-            self.progressBar_6.setProperty("value", 100)
-            self.progressBar_5.setProperty("value", 100)
-            self.progressBar_4.setProperty("value", 100)
-            self.progressBar_3.setProperty("value", 100)
-            self.progressBar.setProperty("value", 100)
-            self.progressBar_2.setProperty("value", 100)
-
+############################ START
+    def fuelReading(self):
+        connection = obd.OBD() #connects to OBD-II
+        fuelCmd = obd.commands.FUEL_LEVEL #Sets the OBD-II FUEL_LEVEL command 
+        while 1:
+            fuelResponse = connection.query(fuelCmd) #Connection query
+            fuelString = str(fuelResponse.value).split() #Converts to string
+            if fuelString[0] != "None":
+                fuel = float(fuelString[0]) #converts to float
+                if fuel <= 10:
+                    self.progressBar_2.setProperty("value", 100)
+                elif fuel <= 20:
+                    self.progressBar.setProperty("value", 100)
+                    self.progressBar_2.setProperty("value", 100)
+                elif fuel <= 30:
+                    self.progressBar_3.setProperty("value", 100)
+                    self.progressBar.setProperty("value", 100)
+                    self.progressBar_2.setProperty("value", 100)
+                elif fuel <= 40:
+                    self.progressBar_4.setProperty("value", 100)
+                    self.progressBar_3.setProperty("value", 100)
+                    self.progressBar.setProperty("value", 100)
+                    self.progressBar_2.setProperty("value", 100)
+                elif fuel <= 50:
+                    self.progressBar_5.setProperty("value", 100)
+                    self.progressBar_4.setProperty("value", 100)
+                    self.progressBar_3.setProperty("value", 100)
+                    self.progressBar.setProperty("value", 100)
+                    self.progressBar_2.setProperty("value", 100)
+                elif fuel <= 60:
+                    self.progressBar_6.setProperty("value", 100)
+                    self.progressBar_5.setProperty("value", 100)
+                    self.progressBar_4.setProperty("value", 100)
+                    self.progressBar_3.setProperty("value", 100)
+                    self.progressBar.setProperty("value", 100)
+                    self.progressBar_2.setProperty("value", 100)
+                elif fuel <= 70:
+                    self.progressBar_7.setProperty("value", 100)
+                    self.progressBar_6.setProperty("value", 100)
+                    self.progressBar_5.setProperty("value", 100)
+                    self.progressBar_4.setProperty("value", 100)
+                    self.progressBar_3.setProperty("value", 100)
+                    self.progressBar.setProperty("value", 100)
+                    self.progressBar_2.setProperty("value", 100)
+                elif fuel <= 80:
+                    self.progressBar_8.setProperty("value", 100)
+                    self.progressBar_7.setProperty("value", 100)
+                    self.progressBar_6.setProperty("value", 100)
+                    self.progressBar_5.setProperty("value", 100)
+                    self.progressBar_4.setProperty("value", 100)
+                    self.progressBar_3.setProperty("value", 100)
+                    self.progressBar.setProperty("value", 100)
+                    self.progressBar_2.setProperty("value", 100)
+                elif fuel <= 90:
+                    self.progressBar_9.setProperty("value", 100)
+                    self.progressBar_8.setProperty("value", 100)
+                    self.progressBar_7.setProperty("value", 100)
+                    self.progressBar_6.setProperty("value", 100)
+                    self.progressBar_5.setProperty("value", 100)
+                    self.progressBar_4.setProperty("value", 100)
+                    self.progressBar_3.setProperty("value", 100)
+                    self.progressBar.setProperty("value", 100)
+                    self.progressBar_2.setProperty("value", 100)
+                elif fuel <= 100:
+                    self.progressBar_10.setProperty("value", 100)
+                    self.progressBar_9.setProperty("value", 100)
+                    self.progressBar_8.setProperty("value", 100)
+                    self.progressBar_7.setProperty("value", 100)
+                    self.progressBar_6.setProperty("value", 100)
+                    self.progressBar_5.setProperty("value", 100)
+                    self.progressBar_4.setProperty("value", 100)
+                    self.progressBar_3.setProperty("value", 100)
+                    self.progressBar.setProperty("value", 100)
+                    self.progressBar_2.setProperty("value", 100)
+                
+########################### FINISH
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
     gui_window = Ui_MainWindow()
