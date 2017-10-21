@@ -58,42 +58,49 @@ Step 8: From the root directory make a folder called "maps"
 
 Step 9: Navit Config file needs to be edited to include the new map
 	#nano ~/.navit/navit.xml
-Disable the Sample Map
-<!-- If you dont want to use the sample map, either set enabled="no" in the next line or remove the xml file from the maps directory>
-<mapset enabled="yes"> (CHANGE THIS TO "no")
-	<xi:include href="$NAVIT_SHAREDIR/maps/*.xml"/>
-</mapset>
+	########Disable the Sample Map
+		<!-- If you dont want to use the sample map, either set enabled="no" in the next line or remove the xml file from the maps directory>
+		<mapset enabled="yes"> (CHANGE THIS TO "no")
+		<xi:include href="$NAVIT_SHAREDIR/maps/*.xml"/>
+		</mapset>
 
-Enable the Downloaded Map
-<!-- Mapset template for openstreetmaps -->
-<mapset enabled="no"> (CHANGE THIS TO "yes")
+	########Enable the Downloaded Map
+		<!-- Mapset template for openstreetmaps -->
+		<mapset enabled="no"> (CHANGE THIS TO "yes")
 	
 
 
-<map type="binfile" enabled="yes" data="/media/mmc2/MapsNavit/osm_europe.bin"/> 
-	(CHANGE THE "data" FIELD TO YOUR RENAMED MAP! (/home/pi/maps/<area>.bin))
-</mapset>
+		<map type="binfile" enabled="yes" data="/media/mmc2/MapsNavit/osm_europe.bin"/> 
+			(CHANGE THE "data" FIELD TO YOUR RENAMED MAP! (/home/pi/maps/<area>.bin))
+		</mapset>
 
 Step 10: Change various navit configurations
-Enable Speech
-<speech type="cmdline" data="echo 'Fix the speech tag in navit.xml to let navit say:' '%s'" cps="15"/>
-	(CHANGE THE "data" field to "espeak  '%s' cps="15"")
+	########Enable Speech
+		<speech type="cmdline" data="echo 'Fix the speech tag in navit.xml to let navit say:' '%s'" cps="15"/>
+		(CHANGE THE "data" field to "espeak  '%s' cps="15"")
 
-Change Locale
-<config xmlns:xi="https://www.w3.org/2001/XInclude"> 
-	(ADD "language="en_US" AT THE END)
+	########Change Locale
+		<config xmlns:xi="https://www.w3.org/2001/XInclude"> 
+		(ADD "language="en_US" AT THE END)
 
-Follow Vehicle
-<vehicle name="Local GPS" profile name="car" enabled="yes" active="1" source="gpsd://localhost" gpsd_query="w+xj">
-	(ADD "follow="2"" at the end)
+	########Follow Vehicle
+		<vehicle name="Local GPS" profile name="car" enabled="yes" active="1" source="gpsd://localhost" gpsd_query="w+xj">
+		(ADD "follow="2"" at the end)
 
-Disable Points of Interest
-<layer name="POI Symbols"> 
-	(ADD "enabled="no"" BEFORE THE ">")
-	# 
-	#
-	
-	#
-	#
+	########Disable Points of Interest
+		<layer name="POI Symbols"> 
+		(ADD "enabled="no"" BEFORE THE ">")
+
+Step 11: Customize Navit
+	########Download the configurations needed for the navit.xml file.
+		#~/ wget ozzmaker.com/downloads/navit-OSD-800-480.txt
+	########Download icons
+		#~/ wget ozzmaker.com/downloads/navit_icons.zip
+	########Extract the icons from the zip file into the directory where Navi stores icon images
+		#sudo unzip navit_icons.zip -d /usr/share/navit/icons/
+	########Add the downloaded files into the config folder before the lines below
+		<!-- for a debug log -->
+		<log enabled="no" type="textfile_debug" data="debug %Y%m%d-%i.txt" flush_size="1000" flush_time="30"/>
+
 	
 	
