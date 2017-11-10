@@ -2,24 +2,82 @@
 <html>
 	<head>
 	<meta charset="UTF-8" />
-	<meta name="viewport" content="width=device-width, initial scale=1' />
+	<meta name="viewport" content="width=device-width, initial scale=1" />
 	<title>
 		Test Map
 	</title>
 	<!-- Leaflet -->
-	<link rel="stylesheet" href ="lib/leaflet/leaflet.css" />
-	<script src = "my_map/lib/leaflet/leaflet.js"></script>
-	<script src ="my_map/lib/leaflet/leafletdata/countries.geojson"></script>
+	<link rel="stylesheet" href ="lib/leaflet/leafletstyle.css" />
+	<script src = "lib/leaflet/leaflet.js"></script>
+	<script src ="data/countries.geojson"></script>
 	<style type="text/css">
 		#map{height: 400px;}
+		.legend {background: white; line-height : 1.5em}
+		.legend i {width : 5em; float : left}
+	</style>
 	</head>
 	<body>
 		<h1>Test Map</h1>
 		<div id="map"></div>
 		<script>
-			var map=L.map('map').setView([42.3314, 83.0458], 13;
-			var countriesLayer = L.geoJson(countries).addTo(map);
-			map.fitBounds(countriesLayer.getBounds());
+			function getCountryColor(popEst){
+				if(popEst > 100000000){
+					return 'red';
+				} else if(popEst > 50000000){
+					return 'blue';
+				} else{
+					return 'green';
+				}
+			}
+		
+			function countriesStyle(feature){
+				return{
+					fillColor: getCountryColor(feature.properties.pop_est),
+					weight: 2,
+					opacity: 1,
+					color: 'white',
+					dashArray: 3,
+					fillOpacity: 0.7				
+				}
+			}
+			var map=L.map('map').setView([42.3314, 83.0458], 6);
+			var countriesLayer = L.geoJson(
+				countries,
+				{style: countriesStyle}
+				).addTo(map);
+			//map.fitBounds(countriesLayer.getBounds());
+			
+			var legend = L.control({position: 'bottomright'});
+			legend.onAdd = function(map){
+				var div = L.DomUtil.create('div', 'legend');
+				var labels = [
+					"Population greater than 100,000,000",
+					"Population greater than 50,000,000",
+					"Population equal or less than 50,000,000"
+					];
+					var grades = [100000001, 50000001, 50000000];
+					div.innerHTML = '<div><b>Legend</b></div>';
+					for (var i = 0; i <grades.length; i++){
+						div.innerHTML += '<i style = "background:' 
+						+ getCountryColor(grades[i]) 
+						+ '">&nbsp;&nbsp;</i>&nbsp;&nbsp;'
+						+labels[i] + '<br />';
+					}
+					return div;
+				}
+				legend.addTo(map);
+				
+				var point = [83.0458, 42.3314];
+				var circle = L.circle(
+					point,
+					10000,
+					{
+						color: 'purple',
+						fillColor: 'red',
+						fillOpacity: 0.8
+					}.addTo(map);
+				var marker = L.marker(point).addTo(map);
+		</script>
 	</body>
 </html>
 	

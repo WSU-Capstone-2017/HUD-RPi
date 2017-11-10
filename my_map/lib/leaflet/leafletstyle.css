@@ -9,6 +9,7 @@
 .leaflet-pane > canvas,
 .leaflet-zoom-box,
 .leaflet-image-layer,
+
 .leaflet-layer {
 	position: absolute;
 	left: 0;
