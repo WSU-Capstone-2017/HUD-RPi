@@ -1,0 +1,28 @@
+div.container{
+		width: 900px;
+		height: 610px;
+		margin: 35px auto;
+		font-family: '', arial;
+}
+div.main{
+	width: 300px;
+	padding: 10px 50px 10px;
+	border: 2px solid gray;
+	border-radius: 10px;
+	font-family: ;
+	float: left;
+	margin-top: 60px;
+}
+
+#btn_address{
+	font-size:16px;
+	background: linear-gradient(#ffbc00 5%, #ffdd7f 100%);
+	border: 1px solid #e5a900;
+	color: #4E4D4B;
+	font-weight: bold;
+	cursor: pointer;
+	width: 47.5%;
+	border-radius: 5px;
+	margin-bottom:10px;
+	padding: 7px 0;
+}

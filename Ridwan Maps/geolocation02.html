@@ -1,0 +1,32 @@
+<!DOCTYPE HTML>
+   <html>
+   <body>
+   
+   <button onclick="getLocationUpdate()"> Test</button>
+	  <p id="demo"></p>
+    <script type="text/javascript">
+	  var test = document.getElementById("demo");
+         var watchID;
+         var geoLoc;
+         
+         function showLocation(position) {
+            var latitude = position.coords.latitude;
+            var longitude = position.coords.longitude;
+			test.innerHTML = "Latitude: " + position.coords.latitude + "<br>Longitude: " + position.coords.longitude;
+         }
+         
+         function getLocationUpdate(){
+            if(navigator.geolocation){
+               // timeout at 60000 milliseconds (60 seconds)
+               var options = {timeout:60000};
+               geoLoc = navigator.geolocation;
+               watchID = geoLoc.watchPosition(showLocation);  //watch position to show real time location
+            }
+			else{
+               alert("Sorry, browser does not support geolocation!");
+            }
+            
+         }
+      </script>
+   </body>
+</html>

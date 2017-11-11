@@ -1,0 +1,83 @@
+<!DOCTYPE html> 
+<html>
+	<head>
+		<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+		<meta content="utf-8" http-equiv="encoding">
+		<title> WARRIOR HUD </title>
+		<!-- CSS Files -->
+		<!-- Bootstraps CDN -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+		<!-- JS Files -->
+		<script src="https://unpkg.com/axios/dist/axios.min.js"></script> <!-- allows us to call get request -->
+		
+		
+	</head>
+	<body>
+		<div class="container">
+			<h2 id="text-center">Search Location: </h2>
+			<form>
+				<input type="text" id="locID" name="locID"/>
+				<br>
+				<input type="button" value="loc" onclick="locFunc()"/>
+			</form>
+		</div>
+		<script>
+			//Get Location from form
+			//var location = document.getElementById("location-input").value;
+			
+			function locFunc(){
+			var location = document.getElementById("locID").value;
+			geocode(location);
+			}
+			
+			//location.addEventListener('submit', geocode);
+			//geocode();
+			function geocode(loc1){
+			//alert(loc1);
+				//event.preventDefault();
+				//var location = '42 W Warren Ave Detroit MI';
+			
+			//get api request. (Google Maps API)
+			
+				axios.get('https://maps.googleapis.com/maps/api/geocode/json', {
+					params:{
+						address: loc1,
+						key: 'AIzaSyBm2ZuYYbCM3Bjys4Mg69kPjMgEv-tr71E'
+					}
+				})
+				.then(function(response){
+					//log full response
+					console.log(response);
+					<!-- var lat = response.data.results[0].geometry.location.lat; -->
+					<!-- var lng = response.data.results[0].geometry.location.lng; -->
+					<!-- var geometryOutput = ` -->
+						<!-- <ulclass ="list-group"> -->
+							<!-- <li class="list-group-item"><strong>Latitude</strong>:${lat}</li> -->
+							<!-- <li class="list-group-item"><strong>Longitude</strong>:${lng}</li> -->
+						<!-- </ul> -->
+						<!-- `; -->
+						<!-- document.getElementById('geometry').innerHTML = geometryOutput; -->
+						
+						var lat = response.data.results[0].geometry.location.lat;
+						var lng = response.data.results[0].geometry.location.lng;
+						alert(lat + " " + lng);
+				})
+				.catch(function(error){
+					console.log(error);
+					});
+					
+					
+					
+			}
+			
+
+			//geocode();
+			
+			
+				//<input type="text" id="location-input" class="form-control form-control-lg">
+				//<br>
+				//<button type="submit" class="btn btn-primary btn-block">Submit</button>
+		</script>
+	
+	</body>
+</html>
