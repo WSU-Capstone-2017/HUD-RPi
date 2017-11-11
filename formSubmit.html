@@ -15,29 +15,33 @@
 	<body>
 		<div class="container">
 			<h2 id="text-center">Search Location: </h2>
-			<form name ="location-form" id = "location-form">
-				<input type="text" name="location-input" id="location-input" class="form-control form-control-lg">
+			<form>
+				<input type="text" id="locID" name="locID"/>
 				<br>
-				<button type="submit" class="btn btn-primary btn-block">Submit</button>
-				</form>
+				<input type="button" value="loc" onclick="locFunc()"/>
+			</form>
 		</div>
 		<script>
 			//Get Location from form
 			//var location = document.getElementById("location-input").value;
-			var location = document.getElementByName("location-form").value;
-	
 			
-			location.addEventListener('submit', geocode);
+			function locFunc(){
+			var location = document.getElementById("locID").value;
+			geocode(location);
+			}
+			
+			//location.addEventListener('submit', geocode);
 			//geocode();
-			function geocode(event){
-
+			function geocode(loc1){
+			//alert(loc1);
 				//event.preventDefault();
-				var location = '42 W Warren Ave Detroit MI';
+				//var location = '42 W Warren Ave Detroit MI';
 			
 			//get api request. (Google Maps API)
+			
 				axios.get('https://maps.googleapis.com/maps/api/geocode/json', {
 					params:{
-						address: location,
+						address: loc1,
 						key: 'AIzaSyBm2ZuYYbCM3Bjys4Mg69kPjMgEv-tr71E'
 					}
 				})
@@ -53,15 +57,20 @@
 						<!-- </ul> -->
 						<!-- `; -->
 						<!-- document.getElementById('geometry').innerHTML = geometryOutput; -->
-					
-					
-					
+						
+						var lat = response.data.results[0].geometry.location.lat;
+						var lng = response.data.results[0].geometry.location.lng;
+						alert(lat + " " + lng);
 				})
 				.catch(function(error){
 					console.log(error);
 					});
+					
+					
+					
 			}
 			
+
 			//geocode();
 			
 			
