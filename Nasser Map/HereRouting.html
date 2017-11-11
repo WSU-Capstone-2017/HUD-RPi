@@ -183,8 +183,8 @@ function calculateRouteFromAtoB (platform) {
       representation: 'display',
       routeattributes : 'waypoints,summary,shape,legs',
       maneuverattributes: 'direction,action',
-      waypoint0: '42.3314,-83.0458', // Brandenburg Gate
-      waypoint1: '42.4895,-83.1446'  // Friedrichstraße Railway Station
+      waypoint0: '42.3314,-83.0458', // Detroit
+      waypoint1: '42.4895,-83.1446'  // Royal Oak
     };
 
 
@@ -237,19 +237,23 @@ var mapContainer = document.getElementById('map'),
 
 //Step 1: initialize communication with the platform
 var platform = new H.service.Platform({
-  app_id: 'DemoAppId01082013GAL',
-  app_code: 'AJKnXv84fjrb0KIHawS0Tg',
+  app_id: '8F1RFyPZhyqzXdPYDY5X',
+  app_code: '8A2jhlt0SHYdRiD7rVs1pw',
   useCIT: true,
   useHTTPS: true
 });
 var defaultLayers = platform.createDefaultLayers();
 
 //Step 2: initialize a map - this map is centered over Berlin
+/*
 var map = new H.Map(mapContainer,
   defaultLayers.normal.map,{
   center: {lat:42.3314, lng:-83.0458},
-  zoom: 13
+  zoom: 18
 });
+*/
+var map = new H.Map(document.getElementById('map'),
+  defaultLayers.normal.map);
 
 //Step 3: make the map interactive
 // MapEvents enables the event system
@@ -274,10 +278,12 @@ function openBubble(position, text){
       // The FO property holds the province name.
       {content: text});
     ui.addBubble(bubble);
+	
   } else {
     bubble.setPosition(position);
     bubble.setContent(text);
     bubble.open();
+	
   }
 }
 
@@ -329,6 +335,7 @@ function addManueversToMap(route){
     for (j = 0;  j < route.leg[i].maneuver.length; j += 1) {
       // Get the next maneuver.
       maneuver = route.leg[i].maneuver[j];
+	  
       // Add a marker to the maneuvers group
       var marker =  new H.map.Marker({
         lat: maneuver.position.latitude,
@@ -336,6 +343,10 @@ function addManueversToMap(route){
         {icon: dotIcon});
       marker.instruction = maneuver.instruction;
       group.addObject(marker);
+	  
+	
+
+	  
     }
   }
 
@@ -347,6 +358,7 @@ function addManueversToMap(route){
 
   // Add the maneuvers group to the map
   map.addObject(group);
+  
 }
 
 
@@ -413,6 +425,7 @@ function addManueversToPanel(route){
     for (j = 0;  j < route.leg[i].maneuver.length; j += 1) {
       // Get the next maneuver.
       maneuver = route.leg[i].maneuver[j];
+	  
 
       var li = document.createElement('li'),
         spanArrow = document.createElement('span'),
@@ -438,17 +451,23 @@ Number.prototype.toMMSS = function () {
 // Now use the map as required...
 calculateRouteFromAtoB (platform);
 function addMarkersToMap(map) {
-  var parisMarker = new H.map.Marker({lat:42.3314, lng:-83.0458});
-  map.addObject(parisMarker);
+  var destMarker = new H.map.Marker({lat:42.4895, lng:-83.1446});
+  map.addObject(destMarker);
+  
 }
-
 // Now use the map as required...
 addMarkersToMap(map);
-
+/*
+function moveMapToCurrent(map){
+  map.setCenter({lat:42.3314, lng:-83.0458});
+  map.setZoom(18);
+}
+moveMapToCurrent(map);
+*/
 function enableTrafficInfo (map) {
-  // Center map on New York
+  // Center map 
   map.setCenter({lat: 42.3314, lng: -83.0458});
-  map.setZoom(11);
+  map.setZoom(18);
 
   // Show traffic tiles
   map.setBaseLayer(defaultLayers.normal.traffic);
@@ -457,6 +476,26 @@ function enableTrafficInfo (map) {
   map.addLayer(defaultLayers.incidents);
 }
 enableTrafficInfo(map);
+
+function addCircleToMap(map){
+  map.addObject(new H.map.Circle(
+    // The central point of the circle
+	
+    {lat:42.3314, lng:-83.0458},
+    // The radius of the circle in meters
+    10,
+    {
+      style: {
+        strokeColor: 'red', // Color of the perimeter
+        lineWidth: 2,
+        fillColor: 'blue'  // Color of the circle
+      }
+    }
+  ));
+  
+}
+addCircleToMap(map);
+
   </script>
 </body>
 </html>
