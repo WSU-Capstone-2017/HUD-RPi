@@ -9,6 +9,7 @@
 	<!-- Leaflet -->
 	<link rel="stylesheet" href ="lib/leaflet/leafletstyle.css" />
 	<script src = "lib/leaflet/leaflet.js"></script>
+	<script src = "lib/leaflet/Yandex.js"></script>
 	<script src ="data/countries.geojson"></script>
 	<style type="text/css">
 		#map{height: 400px;}
@@ -41,6 +42,10 @@
 				}
 			}
 			var map=L.map('map').setView([42.3314, 83.0458], 6);
+			
+			
+			var yandexLayer = new L.Yandex();
+			map.addLayer(yandexLayer);
 			var countriesLayer = L.geoJson(
 				countries,
 				{style: countriesStyle}
