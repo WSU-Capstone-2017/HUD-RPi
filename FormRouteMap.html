@@ -177,11 +177,28 @@
 				<input type="text" id="locID" name="locID"/>
 				<br>
 				<input type="button" value="loc" onclick="locFunc()"/>
+				<input type="button" value="route" onclick="calculateRouteFromAtoB(platform)"/>
 			</form>
 		</div>
 		<script>
-		
-			function calculateRouteFromAtoB(platform, lat2, lng2) {
+			
+			var globalLat;
+			var globalLng;
+			/*
+			var routeGroup = H.map.Group(); //AK
+			function delRoute(map)
+			{
+				map.removeObject(routeGroup);
+			}
+			*/
+			function calculateRouteFromAtoB(platform) {
+			
+			/*//AK
+			if((routeGroup.getObjects()).length != 0)
+			{
+				delRoute(map);
+			}
+			*/
 			  var router = platform.getRoutingService(),
 				routeRequestParams = {
 				  mode: 'fastest;car',
@@ -194,9 +211,9 @@
 				  
 				  waypoint0: '42.3314,-83.0458', // Detroit
 				  //waypoint1: '42.4895,-83.1446'  // Royal Oak
-				  waypoint1: lat2+','+lng2
-				  //alert(lat2 + " " + lng2);
-				  
+				  waypoint1: globalLat+','+globalLng
+				  //alert(globalLat + " " + globalLng);
+				  //console.log(globalLat);
 				  
 				};
 
@@ -241,6 +258,9 @@
 			
 			//location.addEventListener('submit', geocode);
 			//geocode();
+			
+
+			
 			function geocode(loc1){
 			//alert(loc1);
 				//event.preventDefault();
@@ -270,21 +290,19 @@
 						var lat = response.data.results[0].geometry.location.lat;
 						var lng = response.data.results[0].geometry.location.lng;
 						//alert(lat + " " + lng);
-						
+						globalLat = lat;
+						globalLng = lng;
 						addMarkersToMap(map, lat, lng);
-						calculateRouteFromAtoB(platform, lat, lng);
+						//calculateRouteFromAtoB(platform, lat, lng);
 				})
 				.catch(function(error){
 					console.log(error);
 					});
 					
-					
-					
 			}
 			
 
 			//geocode();
-			
 			
 				//<input type="text" id="location-input" class="form-control form-control-lg">
 				//<br>
@@ -351,6 +369,9 @@
 				  strokeColor: 'rgba(0, 128, 255, 0.7)'
 				}
 			  });
+			  
+			  //routeGroup.addObject(polyline); //AK
+			  //map.addObject(routeGroup);
 			  
 			  // Add the polyline to the map
 			  map.addObject(polyline);
@@ -487,6 +508,7 @@
 			addMarkersToMap(map);
 */
 
+
 			function addCircleToMap(map){
 			  map.addObject(new H.map.Circle(
 				// The central point of the circle
@@ -505,7 +527,7 @@
 			  
 			}
 			addCircleToMap(map);
-
+			
 			function enableTrafficInfo (map) {
 			  // Center map on New York
 			  map.setCenter({lat: 42.3314, lng: -83.0458});
@@ -533,7 +555,6 @@
 			addMarkersToMap(map, lat1, lng1);
 			
 
-						
 			
 		</script>
 	
