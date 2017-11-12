@@ -487,6 +487,25 @@
 			addMarkersToMap(map);
 */
 
+			function addCircleToMap(map){
+			  map.addObject(new H.map.Circle(
+				// The central point of the circle
+				
+				{lat:42.3314, lng:-83.0458},
+				// The radius of the circle in meters
+				10,
+				{
+				  style: {
+					strokeColor: 'red', // Color of the perimeter
+					lineWidth: 2,
+					fillColor: 'blue'  // Color of the circle
+				  }
+				}
+			  ));
+			  
+			}
+			addCircleToMap(map);
+
 			function enableTrafficInfo (map) {
 			  // Center map on New York
 			  map.setCenter({lat: 42.3314, lng: -83.0458});
@@ -513,24 +532,7 @@
 			// Now use the map as required...
 			addMarkersToMap(map, lat1, lng1);
 			
-			function addCircleToMap(map){
-			  map.addObject(new H.map.Circle(
-				// The central point of the circle
-				
-				{lat:42.3223, lng:-83.1763},
-				// The radius of the circle in meters
-				10,
-				{
-				  style: {
-					strokeColor: 'red', // Color of the perimeter
-					lineWidth: 2,
-					fillColor: 'blue'  // Color of the circle
-				  }
-				}
-			  ));
-			  
-			}
-			addCircleToMap(map);
+
 						
 			
 		</script>
