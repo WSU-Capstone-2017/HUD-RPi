@@ -183,12 +183,13 @@
 				<input class="btn-primary" type="button" value="Search" onclick="locFunc()"/>
 				<input class="btn-primary" type="button" value="Route" onclick="calculateRouteFromAtoB(platform)"/>
 				<input class="btn-primary" type="button" value="Clear Marker" onclick="clear()"/>
+				<input class="btn-primary" type="button" value="Overview" onclick="addManueversToMap()"/>
 			</p>
 	</div>
 		<script>
 			
-			var globalLat;
-			var globalLng;
+			var globalLat, globalLng, globalLat2, globalLng2;
+			
 			
 			/*
 			var routeGroup = H.map.Group(); //AK
@@ -216,9 +217,9 @@
 				  //var lat3 = 42.3314;
 				  //var lng3 = -83.048;
 				  
-				  waypoint0: '42.3314,-83.0458', // Detroit
+				  waypoint0: globalLat+','+globalLng,//'42.3314,-83.0458', // Detroit
 				  //waypoint1: '42.4895,-83.1446'  // Royal Oak
-				  waypoint1: globalLat+','+globalLng
+				  waypoint1: globalLat2+','+globalLng2
 				  //alert(globalLat + " " + globalLng);
 				  //console.log(globalLat);
 				  
@@ -261,8 +262,8 @@
 			function locFunc(){
 			var location = document.getElementById("locID").value;
 			var location2= document.getElementById("locID2").value;
-			geocode(location);
-			geocode(location2);
+			geocode0(location);
+			geocode1(location2);
 			}
 			
 			//location.addEventListener('submit', geocode);
@@ -270,7 +271,7 @@
 			
 
 			
-			function geocode(loc1){
+			function geocode0(loc1){
 			//alert(loc1);
 				//event.preventDefault();
 				//var location = '42 W Warren Ave Detroit MI';
@@ -310,6 +311,45 @@
 					
 			}
 			
+			function geocode1(loc1){
+			//alert(loc1);
+				//event.preventDefault();
+				//var location = '42 W Warren Ave Detroit MI';
+			
+			//get api request. (Google Maps API)
+			
+				axios.get('https://maps.googleapis.com/maps/api/geocode/json', {
+					params:{
+						address: loc1,
+						key: 'AIzaSyBm2ZuYYbCM3Bjys4Mg69kPjMgEv-tr71E'
+					}
+				})
+				.then(function(response){
+					//log full response
+					console.log(response);
+					<!-- var lat = response.data.results[0].geometry.location.lat; -->
+					<!-- var lng = response.data.results[0].geometry.location.lng; -->
+					<!-- var geometryOutput = ` -->
+						<!-- <ulclass ="list-group"> -->
+							<!-- <li class="list-group-item"><strong>Latitude</strong>:${lat}</li> -->
+							<!-- <li class="list-group-item"><strong>Longitude</strong>:${lng}</li> -->
+						<!-- </ul> -->
+						<!-- `; -->
+						<!-- document.getElementById('geometry').innerHTML = geometryOutput; -->
+						
+						var lat = response.data.results[0].geometry.location.lat;
+						var lng = response.data.results[0].geometry.location.lng;
+						//alert(lat + " " + lng);
+						globalLat2 = lat;
+						globalLng2 = lng;
+						addMarkersToMap(map, lat, lng);
+						//calculateRouteFromAtoB(platform, lat, lng);
+				})
+				.catch(function(error){
+					console.log(error);
+					});
+					
+			}
 
 			//geocode();
 			
@@ -449,6 +489,7 @@
 			  routeInstructionsContainer.appendChild(nodeH3);
 			}
 			
+			
 			function addSummaryToPanel(summary){
 			  var summaryDiv = document.createElement('div'),
 			   content = '';
@@ -554,7 +595,9 @@
 			  //var destMarker = new H.map.Marker({lat:42.3314, lng:-83.0458});
 			  var destMarker = new H.map.Marker({lat:lat1, lng:lng1});
 			  map.addObject(destMarker);
-			  map.setViewBounds(getBounds(destMarker));
+			  map.setCenter({lat:lat1, lng:lng1});
+			  map.setZoom(17);
+			//  map.setViewBounds(getBounds(destMarker));
 			  
 			  function clear(map, lat1, lng1){
 				var destMarker = new H.map.Marker({lat:lat1, lng:lng1});
