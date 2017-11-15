@@ -1,0 +1,656 @@
+<!DOCTYPE html> 
+<html>
+	<head>
+		<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+		<meta content="utf-8" http-equiv="encoding">
+		<title> WARRIOR HUD </title>
+		<!-- CSS Files -->
+		<!-- Bootstraps CDN -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+		<!-- JS Files -->
+		<script src="https://unpkg.com/axios/dist/axios.min.js"></script> <!-- allows us to call get request -->
+		<meta name="viewport" content="initial-scale=1.0, width=device-width" />
+		<link rel="stylesheet" type="text/css" href="https://js.cit.api.here.com/v3/3.0/mapsjs-ui.css" />
+		<script type="text/javascript" src="https://js.cit.api.here.com/v3/3.0/mapsjs-core.js"></script>
+		<script type="text/javascript" src="https://js.cit.api.here.com/v3/3.0/mapsjs-service.js"></script>
+		<script type="text/javascript" src="https://js.cit.api.here.com/v3/3.0/mapsjs-ui.js"></script>
+		<script type="text/javascript" src="https://js.cit.api.here.com/v3/3.0/mapsjs-mapevents.js"></script>
+<style type="text/css">
+.directions li span.arrow {
+  display:inline-block;
+  min-width:28px;
+  min-height:28px;
+  background-position:0px;
+  background-image: url("../img/arrows.png");
+  position:relative;
+  top:8px;
+}
+.directions li span.depart  {
+  background-position:-28px;
+}
+.directions li span.rightUTurn  {
+  background-position:-56px;
+}
+.directions li span.leftUTurn  {
+  background-position:-84px;
+}
+.directions li span.rightFork  {
+  background-position:-112px;
+}
+.directions li span.leftFork  {
+  background-position:-140px;
+}
+.directions li span.rightMerge  {
+  background-position:-112px;
+}
+.directions li span.leftMerge  {
+  background-position:-140px;
+}
+.directions li span.slightRightTurn  {
+  background-position:-168px;
+}
+.directions li span.slightLeftTurn{
+  background-position:-196px;
+}
+.directions li span.rightTurn  {
+  background-position:-224px;
+}
+.directions li span.leftTurn{
+  background-position:-252px;
+}
+.directions li span.sharpRightTurn  {
+  background-position:-280px;
+}
+.directions li span.sharpLeftTurn{
+  background-position:-308px;
+}
+.directions li span.rightRoundaboutExit1 {
+  background-position:-616px;
+}
+.directions li span.rightRoundaboutExit2 {
+  background-position:-644px;
+}
+
+.directions li span.rightRoundaboutExit3 {
+  background-position:-672px;
+}
+
+.directions li span.rightRoundaboutExit4 {
+  background-position:-700px;
+}
+
+.directions li span.rightRoundaboutPass {
+  background-position:-700px;
+}
+
+.directions li span.rightRoundaboutExit5 {
+  background-position:-728px;
+}
+.directions li span.rightRoundaboutExit6 {
+  background-position:-756px;
+}
+.directions li span.rightRoundaboutExit7 {
+  background-position:-784px;
+}
+.directions li span.rightRoundaboutExit8 {
+  background-position:-812px;
+}
+.directions li span.rightRoundaboutExit9 {
+  background-position:-840px;
+}
+.directions li span.rightRoundaboutExit10 {
+  background-position:-868px;
+}
+.directions li span.rightRoundaboutExit11 {
+  background-position:896px;
+}
+.directions li span.rightRoundaboutExit12 {
+  background-position:924px;
+}
+.directions li span.leftRoundaboutExit1  {
+  background-position:-952px;
+}
+.directions li span.leftRoundaboutExit2  {
+  background-position:-980px;
+}
+.directions li span.leftRoundaboutExit3  {
+  background-position:-1008px;
+}
+.directions li span.leftRoundaboutExit4  {
+  background-position:-1036px;
+}
+.directions li span.leftRoundaboutPass {
+  background-position:1036px;
+}
+.directions li span.leftRoundaboutExit5  {
+  background-position:-1064px;
+}
+.directions li span.leftRoundaboutExit6  {
+  background-position:-1092px;
+}
+.directions li span.leftRoundaboutExit7  {
+  background-position:-1120px;
+}
+.directions li span.leftRoundaboutExit8  {
+  background-position:-1148px;
+}
+.directions li span.leftRoundaboutExit9  {
+  background-position:-1176px;
+}
+.directions li span.leftRoundaboutExit10  {
+  background-position:-1204px;
+}
+.directions li span.leftRoundaboutExit11  {
+  background-position:-1232px;
+}
+.directions li span.leftRoundaboutExit12  {
+  background-position:-1260px;
+}
+.directions li span.arrive  {
+  background-position:-1288px;
+}
+.directions li span.leftRamp  {
+  background-position:-392px;
+}
+.directions li span.rightRamp  {
+  background-position:-420px;
+}
+.directions li span.leftExit  {
+  background-position:-448px;
+}
+.directions li span.rightExit  {
+  background-position:-476px;
+}
+
+.directions li span.ferry  {
+  background-position:-1316px;
+</style>
+		
+	</head>
+	<body>
+		<div id="map" style="position:absolute; width:49%; height:100%; background:grey" ></div>
+		<div id="panel" style="position:absolute; width:49%; left:51%; height:100%; background:inherit" ></div>
+	
+		<div class="form-control">
+			<input class="col-3" role = "search" type="text" id="locID" name="locID" placeholder = "Destination Search"/>
+		</div>
+		<div class="container pull-left">
+			<div class ="row" align="left">
+				<input class="btn-primary" type="button" value="Search" onclick="locFunc()"/>
+				<input class="btn-primary" type="button" value="Route" onclick="calculateRouteFromAtoB(platform)"/>
+				<!-- <input class="btn-primary" type="button" value="Clear Guidance" onclick="delRoute()"/> -->
+				
+			</div>
+		</div>
+		<script>
+			//Global variables store longitude and latitude from get function
+			var globalLat;
+			var globalLng;
+			var globalLat2;
+			var globalLng2;
+			//global group
+			var markerGroup = new H.map.Group();
+			var cargroup = new H.map.Group();
+			
+			//Routing Group
+			var routeGroup = H.map.Group(); 
+			//Route Deletion and Marker Deletion
+			function delRoute(map)
+			{
+				addMarkersToMap(map="clear", lat1="", lng1="");
+				//map.removeObject(routeGroup);
+			}
+			
+			
+				
+			function calculateRouteFromAtoB(platform) {
+			
+			car(map,cargroup);
+			setInterval(function(){autoupdate();},3000);
+			
+			/*//AK
+			if((routeGroup.getObjects()).length != 0)
+			{
+				delRoute(map);
+			}
+			*/
+			  var router = platform.getRoutingService(),
+				routeRequestParams = {
+				  mode: 'fastest;car',
+				  representation: 'display',
+				  routeattributes : 'waypoints,summary,shape,legs',
+				  maneuverattributes: 'direction,action',
+				  
+				  //var lat3 = 42.3314;
+				  //var lng3 = -83.048;
+				  
+				//  waypoint0: '42.3314,-83.0458', // Detroit
+				  waypoint0: globalLat2+','+globalLng2,
+				  //waypoint1: '42.4895,-83.1446'  // Royal Oak
+				  waypoint1: globalLat+','+globalLng
+				  //alert(globalLat + " " + globalLng);
+				  //console.log(globalLat);
+				  
+				};
+
+
+			  router.calculateRoute(
+				routeRequestParams,
+				onSuccess,
+				onError
+			  );
+			}
+			
+			function onSuccess(result) {
+			  var route = result.response.route[0];
+			
+			  addRouteShapeToMap(route);
+			  addManueversToMap(route);
+
+			  addWaypointsToPanel(route.waypoint);
+			  addManueversToPanel(route);
+			  addSummaryToPanel(route.summary);
+			  // ... etc.
+			}
+			
+			function onError(error) {
+			  alert('Ooops!');
+			}
+			
+			function car(map,group)
+			{
+
+				// Now use the map as required...
+				
+				var SvgMarkup = '<svg width="18" height="18" ' +
+				'xmlns="http://www.w3.org/2000/svg">' +
+				'<circle cx="8" cy="8" r="8" ' +
+				'fill="red" stroke="white" stroke-width="1"  />' +
+				'</svg>',
+				dotIcon2 = new H.map.Icon(SvgMarkup, {anchor: {x:8, y:8}});
+
+
+				var xhttp = new XMLHttpRequest();
+				xhttp.onreadystatechange = function (){
+					if(xhttp.readyState==4 & xhttp.status==200){ var pos = xhttp.responseText;
+						//document.getElementById('showplace').innerHTML = pos;
+
+						//var poslat= (Number(pos.slice(0,9)))/100;
+						//var poslong= (Number(pos.slice(14,24)))/100;
+
+						var poslat= pos.slice(0,13);
+						var poslong= pos.slice(15,27);
+
+						var latDD = Number(poslat.slice(0,3));
+						var latMM = Number(poslat.slice(3,11));
+						var lonDD = Number(poslong.slice(0,2));
+						var lonMM = Number(poslong.slice(2,10));
+
+
+						var currentlat;
+						var currentlon;
+
+						if (poslat[12] == 'S')
+						{
+							currentlat=(latDD+(latMM/60)) * -1;
+						}
+						else
+						{
+							currentlat=latDD+(latMM/60);
+						}
+						if (poslong[11] == 'W')
+						{
+							currentlon=(lonDD+(lonMM/60)) * -1;
+						}
+						else
+						{
+							currentlon=lonDD+(lonMM/60);
+						}
+						globalLat2 = currentlat;
+						globalLng2 = currentlon;
+						//document.getElementById('posx').innerHTML=currentlat;
+						//document.getElementById('posy').innerHTML=currentlon;
+
+						var custommarker =  new H.map.Marker({
+							lat: currentlat,
+							lng: currentlon} ,
+							{icon: dotIcon2});
+							
+							
+						console.log('custom marker created');
+
+						
+						//map.addObject(custommarker);
+						console.log("put car on map");
+						map.setCenter({lat:currentlat, lng: currentlon});
+						map.setZoom(17);
+
+						
+						group.addObject(custommarker);
+						map.addObject(group);
+
+						//new google.maps.Marker({
+						//	position:new google.maps.LatLng(42.3314, -83.0458),
+						//	map: map
+						//	});
+					};
+				}
+				
+				xhttp.open("GET", "/cgi-bin/test_script", true);
+				xhttp.send();
+				console.log("send");
+				console.log((group.getObjects()).length);
+				if((group.getObjects()).length > 1)
+				{
+					group.removeObject(group.getObjects()[0]);
+					//map.removeObjects();
+				}
+
+				   //customgroup = new  H.map.Group();
+				   //customgroup.addObject(custommarker);
+
+				}
+				
+			
+
+			//Get Location from form
+			//var location = document.getElementById("location-input").value;
+			
+			function locFunc(){
+			var location = document.getElementById("locID").value;
+			geocode(location);
+			}
+			
+			//location.addEventListener('submit', geocode);
+			//geocode();
+			
+
+			
+			function geocode(loc1){
+			//alert(loc1);
+				//event.preventDefault();
+				//var location = '42 W Warren Ave Detroit MI';
+			
+			//get api request. (Google Maps API)
+			
+				axios.get('https://maps.googleapis.com/maps/api/geocode/json', {
+					params:{
+						address: loc1,
+						key: 'AIzaSyBm2ZuYYbCM3Bjys4Mg69kPjMgEv-tr71E'
+					}
+				})
+				.then(function(response){
+					//log full response
+					console.log(response);
+					<!-- var lat = response.data.results[0].geometry.location.lat; -->
+					<!-- var lng = response.data.results[0].geometry.location.lng; -->
+					<!-- var geometryOutput = ` -->
+						<!-- <ulclass ="list-group"> -->
+							<!-- <li class="list-group-item"><strong>Latitude</strong>:${lat}</li> -->
+							<!-- <li class="list-group-item"><strong>Longitude</strong>:${lng}</li> -->
+						<!-- </ul> -->
+						<!-- `; -->
+						<!-- document.getElementById('geometry').innerHTML = geometryOutput; -->
+						
+						var lat = response.data.results[0].geometry.location.lat;
+						var lng = response.data.results[0].geometry.location.lng;
+						//alert(lat + " " + lng);
+						globalLat = lat;
+						globalLng = lng;
+						addMarkersToMap(map, lat, lng);
+						//calculateRouteFromAtoB(platform, lat, lng);
+				})
+				.catch(function(error){
+					console.log(error);
+					});
+					
+			}
+			
+
+			//geocode();
+			
+				//<input type="text" id="location-input" class="form-control form-control-lg">
+				//<br>
+				//<button type="submit" class="btn btn-primary btn-block">Submit</button>
+				
+				
+			////////////////////////////////////
+			var mapContainer = document.getElementById('map'),
+				routeInstructionsContainer = document.getElementById('panel');
+			
+			//Step 1: initialize communication with the platform
+			var platform = new H.service.Platform({
+			  app_id: '8F1RFyPZhyqzXdPYDY5X',
+			  app_code: '8A2jhlt0SHYdRiD7rVs1pw',
+			  useCIT: true,
+			  useHTTPS: true
+			});
+			var defaultLayers = platform.createDefaultLayers();
+
+			//Step 2: initialize a map  
+			var map = new H.Map(document.getElementById('map'),
+			  defaultLayers.normal.map);
+
+			//Step 3: make the map interactive
+			// MapEvents enables the event system
+			// Behavior implements default interactions for pan/zoom (also on mobile touch environments)
+			var behavior = new H.mapevents.Behavior(new H.mapevents.MapEvents(map));
+
+			// Create the default UI components
+			var ui = H.ui.UI.createDefault(map, defaultLayers);
+			var bubble;
+			
+			function openBubble(position, text){
+			 if(!bubble){
+				bubble =  new H.ui.InfoBubble(
+				  position,
+				  // The FO property holds the province name.
+				  {content: text});
+				ui.addBubble(bubble);
+				
+			  } else {
+				bubble.setPosition(position);
+				bubble.setContent(text);
+				bubble.open();
+				
+			  }
+			}
+			
+			function addRouteShapeToMap(route){
+			  var lineString = new H.geo.LineString(),
+				routeShape = route.shape,
+				polyline;
+
+			  routeShape.forEach(function(point) {
+				var parts = point.split(',');
+				lineString.pushLatLngAlt(parts[0], parts[1]);
+			  });
+
+			  polyline = new H.map.Polyline(lineString, {
+				style: {
+				  lineWidth: 4,
+				  strokeColor: 'rgba(0, 128, 255, 0.7)'
+				}
+			  });
+			  
+			  //routeGroup.addObject(polyline); //AK
+			  //map.addObject(routeGroup);
+			  
+			  // Add the polyline to the map
+			  map.addObject(polyline);
+			  // And zoom to its bounding rectangle
+			  map.setViewBounds(polyline.getBounds(), true);
+			}
+			
+			function addManueversToMap(route){
+			  var svgMarkup = '<svg width="18" height="18" ' +
+				'xmlns="http://www.w3.org/2000/svg">' +
+				'<circle cx="8" cy="8" r="8" ' +
+				  'fill="#1b468d" stroke="white" stroke-width="1"  />' +
+				'</svg>',
+				dotIcon = new H.map.Icon(svgMarkup, {anchor: {x:8, y:8}}),
+				group = new  H.map.Group(),
+				i,
+				j;
+
+			  // Add a marker for each maneuver
+			  for (i = 0;  i < route.leg.length; i += 1) {
+				for (j = 0;  j < route.leg[i].maneuver.length; j += 1) {
+				  // Get the next maneuver.
+				  maneuver = route.leg[i].maneuver[j];
+				  
+				  // Add a marker to the maneuvers group
+				  var marker =  new H.map.Marker({
+					lat: maneuver.position.latitude,
+					lng: maneuver.position.longitude} ,
+					{icon: dotIcon});
+				  marker.instruction = maneuver.instruction;
+				  group.addObject(marker);
+				  			  
+				}
+			  }
+
+			  group.addEventListener('tap', function (evt) {
+				map.setCenter(evt.target.getPosition());
+				openBubble(
+				   evt.target.getPosition(), evt.target.instruction);
+			  }, false);
+
+			  // Add the maneuvers group to the map
+			  map.addObject(group);
+			  
+			}
+			
+			function addWaypointsToPanel(waypoints){
+
+
+
+			  var nodeH3 = document.createElement('h3'),
+				waypointLabels = [],
+				i;
+
+
+			   for (i = 0;  i < waypoints.length; i += 1) {
+				waypointLabels.push(waypoints[i].label)
+			   }
+
+			   nodeH3.textContent = waypointLabels.join(' - ');
+
+			  routeInstructionsContainer.innerHTML = '';
+			  routeInstructionsContainer.appendChild(nodeH3);
+			}
+			
+			function addSummaryToPanel(summary){
+			  var summaryDiv = document.createElement('div'),
+			   content = '';
+			   content += '<b>Total distance</b>: ' + summary.distance  + 'm. <br/>';
+			   content += '<b>Travel Time</b>: ' + summary.travelTime.toMMSS() + ' (in current traffic)';
+
+
+			  summaryDiv.style.fontSize = 'small';
+			  summaryDiv.style.marginLeft ='5%';
+			  summaryDiv.style.marginRight ='5%';
+			  summaryDiv.innerHTML = content;
+			  routeInstructionsContainer.appendChild(summaryDiv);
+			}
+			
+			function addManueversToPanel(route){
+
+
+
+			  var nodeOL = document.createElement('ol'),
+				i,
+				j;
+
+			  nodeOL.style.fontSize = 'small';
+			  nodeOL.style.marginLeft ='5%';
+			  nodeOL.style.marginRight ='5%';
+			  nodeOL.className = 'directions';
+
+				 // Add a marker for each maneuver
+			  for (i = 0;  i < route.leg.length; i += 1) {
+				for (j = 0;  j < route.leg[i].maneuver.length; j += 1) {
+				  // Get the next maneuver.
+				  maneuver = route.leg[i].maneuver[j];
+				  
+
+				  var li = document.createElement('li'),
+					spanArrow = document.createElement('span'),
+					spanInstruction = document.createElement('span');
+
+				  spanArrow.className = 'arrow '  + maneuver.action;
+				  spanInstruction.innerHTML = maneuver.instruction;
+				  li.appendChild(spanArrow);
+				  li.appendChild(spanInstruction);
+
+				  nodeOL.appendChild(li);
+				}
+			  }
+
+			  routeInstructionsContainer.appendChild(nodeOL);
+			}
+
+
+			Number.prototype.toMMSS = function () {
+			  return  Math.floor(this / 60)  +' minutes '+ (this % 60)  + ' seconds.';
+			}
+
+			// Now use the map as required...
+			//calculateRouteFromAtoB(platform);
+			
+
+			function addCircleToMap(map){
+			  map.addObject(new H.map.Circle(
+				// The central point of the circle
+				
+				{lat:42.3314, lng:-83.0458},
+				// The radius of the circle in meters
+				10,
+				{
+				  style: {
+					strokeColor: 'red', // Color of the perimeter
+					lineWidth: 2,
+					fillColor: 'blue'  // Color of the circle
+				  }
+				}
+			  ));
+			  
+			}
+			addCircleToMap(map);
+			
+			function enableTrafficInfo (map) {
+			  // Center map to detroit
+			  map.setCenter({lat: 42.3314, lng: -83.0458});
+			  map.setZoom(11);
+
+			  // Show traffic tiles
+			  map.setBaseLayer(defaultLayers.normal.traffic);
+
+			  // Enable traffic incidents layer
+			  map.addLayer(defaultLayers.incidents);
+			}
+			enableTrafficInfo(map);
+			
+			//var markerGroup = new H.map.Group();
+			function addMarkersToMap(map, lat1, lng1) {
+			  //var destMarker = new H.map.Marker({lat:42.3314, lng:-83.0458});
+				var destMarker = new H.map.Marker({lat:lat1, lng:lng1});
+				map.addObject(destMarker);
+			  
+			  //map.addObject(markerGroup);
+			  //var marker = new H.map.Marker(map.getCenter());
+			  //markerGroup.addObject(marker);
+			  
+			  map.setCenter({lat:lat1, lng:lng1});
+			  map.setZoom(16);
+			 
+			  //alert(lat1 + " " + lng1);
+			  			  
+			}
+			addMarkersToMap(map, lat1, lng1);
+			
+			
+		</script>
+	
+	</body>
+</html>
