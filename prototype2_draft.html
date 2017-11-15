@@ -178,6 +178,7 @@
 				<br>
 				<input type="button" value="loc" onclick="locFunc()"/>
 				<input type="button" value="route" onclick="calculateRouteFromAtoB(platform);"/>
+				<input type="button" id="testt" value="clear"/>
 			</form>
 		</div>
 		<script>
@@ -632,7 +633,10 @@
 			  map.setZoom(16);
 			 
 			  //alert(lat1 + " " + lng1);
-			  			  
+			document.getElementById("testt").addEventListener("click", function(){
+			map.removeObject(destMarker);
+			
+			});			  
 			}
 			addMarkersToMap(map, lat1, lng1);
 			
