@@ -178,6 +178,7 @@
 				<br>
 				<input type="button" value="loc" onclick="locFunc()"/>
 				<input type="button" value="route" onclick="calculateRouteFromAtoB(platform);"/>
+				<input type="button" id="test" value="clear"/>
 			</form>
 		</div>
 		<script>
@@ -476,6 +477,12 @@
 			  map.addObject(polyline);
 			  // And zoom to its bounding rectangle
 			  map.setViewBounds(polyline.getBounds(), true);
+			  
+			  document.getElementById("test").addEventListener("click", function(){
+			  map.removeObject(polyline);
+			
+			  });
+			  
 			}
 			
 			function addManueversToMap(route){
@@ -514,6 +521,13 @@
 
 			  // Add the maneuvers group to the map
 			  map.addObject(group);
+			  
+			  
+			  document.getElementById("test").addEventListener("click", function(){
+			  map.removeObject(group);
+			
+			  });
+			  
 			  
 			}
 			
@@ -635,7 +649,11 @@
 			  map.setZoom(16);
 			 
 			  //alert(lat1 + " " + lng1);
-			  			  
+			  document.getElementById("test").addEventListener("click", function(){
+			  map.removeObject(destMarker);
+			
+			  });
+						  
 			}
 			addMarkersToMap(map, lat1, lng1);
 			
