@@ -200,6 +200,10 @@
 			
 			car(map,cargroup);
 			setInterval(function(){car(map, cargroup);},1000);
+			
+			setInterval(function(){calculateRouteFromAtoB(platform);},10000);
+			console.log("Calculating route");
+			
 
 
 			
@@ -211,11 +215,12 @@
 			*/
 			  var router = platform.getRoutingService(),
 				routeRequestParams = {
-				  mode: 'fastest;car',
+				  mode: 'fastest;car;traffic:enabled', //enabled traffic while routing
 				  representation: 'display',
 				  routeattributes : 'waypoints,summary,shape,legs',
 				  maneuverattributes: 'direction,action',
-				  
+				  language: 'en-us', // US format
+				  metricSystem: 'imperial', //changed metric system to miles and yards
 				  //var lat3 = 42.3314;
 				  //var lng3 = -83.048;
 				  
@@ -474,9 +479,10 @@
 			  
 			  // Add the polyline to the map
 			  map.addObject(polyline);
-			  // And zoom to its bounding rectangle
-			  map.setViewBounds(polyline.getBounds(), true);
+			  // And zoom to its bounding rectangle                     //This is to show the whole route before navigating .. implement it for different button functionality
+			//  map.setViewBounds(polyline.getBounds(), true);
 			}
+			
 			
 			function addManueversToMap(route){
 			  var svgMarkup = '<svg width="18" height="18" ' +
@@ -517,6 +523,8 @@
 			  
 			}
 			
+			
+			
 			function addWaypointsToPanel(waypoints){
 
 
@@ -537,9 +545,11 @@
 			}
 			
 			function addSummaryToPanel(summary){
+			  var distanceToMile = summary.distance*(0.000621); // this is to convert travel distance from meters to miles
+			  var ditanceToDecimal = distanceToMile.toFixed(3); // this is to set the decimal numbers to 3
 			  var summaryDiv = document.createElement('div'),
 			   content = '';
-			   content += '<b>Total distance</b>: ' + summary.distance  + 'm. <br/>';
+			   content += '<b>Total distance</b>: ' + ditanceToDecimal  + ' miles. <br/>'; // display travel distance
 			   content += '<b>Travel Time</b>: ' + summary.travelTime.toMMSS() + ' (in current traffic)';
 
 
@@ -618,6 +628,7 @@
 			  // Center map to detroit
 			  map.setCenter({lat: 42.3314, lng: -83.0458});
 			  map.setZoom(11);
+		
 
 			  // Show traffic tiles
 			  map.setBaseLayer(defaultLayers.normal.traffic);
