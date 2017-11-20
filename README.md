@@ -102,5 +102,38 @@ Step 11: Customize Navit
 		<!-- for a debug log -->
 		<log enabled="no" type="textfile_debug" data="debug %Y%m%d-%i.txt" flush_size="1000" flush_time="30"/>
 
-	
-	
+# Online Navigation	
+step 12: Prepare to install Apache2 on Raspberry Pi
+	 First get the local IP address of the Raspberry Pi by typing this command 
+	# ifconfig
+	 Update Raspberry Pi
+	# sudo apt-get update
+	# sudo apt-get upgrade -y
+
+Step 13: install Apache2
+	# sudo apt-get install apache2 -y
+
+Step 14: Add PHP and MySQL (optional)
+	# sudo apt-get install php5 mysql-server -y
+
+Step 15: Open web browser and enter the IP address from step 12
+	# https://127.0.0.1
+	The websites's files are located in the /var/www/html directory
+
+Step 16: Run the following command to make the folder accessible to default user
+	# sudo chown -R pi /var/www/html
+
+Step 17: Delete the index.html file that's in /var/www/html
+
+Step 18: Configure Apache2 to let it execute Python script using CGI. 
+	In our case, we have a python script to grap the longitude and latitude from our GPS module
+	Modify the config file /etc/apache2/conf-enabled/serve-cgi-bin.conf
+
+Step 19: Make the python file executable
+	# sudo chmod +x /usr/lib/cgi-bin/pyFile.py
+
+Step 20: Restart Apache 2 service
+	# sudo service apache2 restart
+
+Step 21: Give permission to the GPS USB serial cable to let the browser grap information from GPS
+	# sudo chmod 777 /dev/ttyUSB0
