@@ -128,6 +128,11 @@ Step 17: Delete the index.html file that's in /var/www/html
 Step 18: Configure Apache2 to let it execute Python script using CGI. 
 	In our case, we have a python script to grap the longitude and latitude from our GPS module
 	Modify the config file /etc/apache2/conf-enabled/serve-cgi-bin.conf
+	<Directory "usr/lib/cgi-bin">
+             ... ...
+
+             AddHandler cgi-script .py          # add this line (there is a blank between cgi-script and .py)
+	</Directory>
 
 Step 19: Make the python file executable
 	# sudo chmod +x /usr/lib/cgi-bin/pyFile.py
