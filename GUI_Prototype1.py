@@ -3,10 +3,11 @@ import time
 from threading import Thread
 import os
 import subprocess
-import obd
+
+#import obd
 
 
-from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5 import QtCore, QtGui, QtWidgets, QtWebEngineWidgets
 class Ui_SplitWin(QtWidgets.QMainWindow):
     #  added parent
     def __init__(self, parent=None):
@@ -187,11 +188,20 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         self.fuel.setStyleSheet("color: rgb(255, 255, 255);")
         self.fuel.setObjectName("fuel")
 
+        self.pushButton3 = QtWidgets.QPushButton(self.centralwidget)
+        self.pushButton3.setGeometry(QtCore.QRect(60, 280, 175, 41)) #Online Navigation
+        font = QtGui.QFont()
+        font.setPointSize(20)
+        font.setBold(True)
+        font.setWeight(75)
+        self.pushButton3.setFont(font)
+        self.pushButton3.setStyleSheet("color: rgb(255, 255, 255);")
+        self.pushButton3.setObjectName("pushButton3")
+        
         self.pushButton1 = QtWidgets.QPushButton(self.centralwidget)
         self.pushButton1.setGeometry(QtCore.QRect(60, 345, 175, 41)) #switch
         font = QtGui.QFont()
-        font.setPointSize(20
-                          )
+        font.setPointSize(20)
         font.setBold(True)
         font.setWeight(75)
         self.pushButton1.setFont(font)
@@ -225,15 +235,35 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         th = Thread(target=self.instrument_readings)
         th.start()
 ##################################################################
+        #Boot online nav in gui
+        app = QtWidgets.QApplication(sys.argv)
+        view = QtWebEngineWidgets.QWebEngineView()
+        view.load(QtCore.QUrl().fromLocalFile(os.path.split(os.path.abspath(__file__))[0]+r"C:\Users\yosef\Documents\GitHub\HUD-RPi\Testremove.html"))
+        view.show()
+        
+##################################################################
+##################################################################
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
         self.speed.setText(_translate("MainWindow", "MPH"))
         self.rpm.setText(_translate("MainWindow", "RPM"))
         self.fuel.setText(_translate("MainWindow", "Fuel Level"))
-        
-        self.pushButton1.setText(_translate("MainWindow", "Switch Screen"))
+
+        self.pushButton3.setText(_translate("MainWindow", "Online NAV"))        
+        self.pushButton1.setText(_translate("MainWindow", "NavIT"))
         self.pushButton2.setText(_translate("MainWindow", "View Alerts"))
+###########################################################################
+#switch screen handler for Online Navigation
+    #def buttonHandler(self):
+      #  navitPath="C:\Users\yosef\Documents\GitHub\HUD-RPi\Removetest"
+       # subprocess.Popen(navitPath)
+        #window = QWindow.fromWinId(navWin)
+        #self.createWindowContainer(window,self)
+        #self.setGeometry(500, 500, 450, 400)
+        #self.setWindowTitle("Online Navigation")
+        #self.mdiArea()
+#########################################################################
 # switch screen handler & Navit
     def buttonHandler(self):
 ##        import navit
@@ -405,7 +435,7 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
     gui_window = Ui_MainWindow()
-   # gui_window.showMaximized()
-    gui_window.showFullScreen()
+    gui_window.showMaximized()
+    #gui_window.showFullScreen()
     sys.exit(app.exec_())
 ###############################################################
