@@ -3,6 +3,8 @@ import time
 from threading import Thread
 import os
 import subprocess
+import urllib
+import webbrowser
 
 #import obd
 
@@ -59,6 +61,7 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         # when clicked
         self.pushButton1.clicked.connect(self.buttonHandler)
         self.pushButton2.clicked.connect(self.textbox)
+        self.pushButton3.clicked.connect(self.buttonHandler2)
 
        
     def setupUi(self, MainWindow):
@@ -235,13 +238,7 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         th = Thread(target=self.instrument_readings)
         th.start()
 ##################################################################
-        #Boot online nav in gui
-        app = QtWidgets.QApplication(sys.argv)
-        view = QtWebEngineWidgets.QWebEngineView()
-        view.load(QtCore.QUrl().fromLocalFile(os.path.split(os.path.abspath(__file__))[0]+r"C:\Users\yosef\Documents\GitHub\HUD-RPi\Testremove.html"))
-        view.show()
-        
-##################################################################
+
 ##################################################################
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
@@ -255,7 +252,14 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         self.pushButton2.setText(_translate("MainWindow", "View Alerts"))
 ###########################################################################
 #switch screen handler for Online Navigation
-    #def buttonHandler(self):
+    def buttonHandler2(self):
+        webbrowser.open('filepath')
+        #webView.load(QUrl(r"C:\Users\yosef\Documents\GitHub\HUD-RPi\prototype2_draft2.html"))
+        #self.result = urllib2urlopen("file:///HUD-RPi\prototype2_draft2.html").read()
+      #  cwd = os.getcwd()
+     #   view = QtWebEngineWidgets.QWebEngineView()
+       # self.view.load(QUrl.fromLocalFile(cwd+"\\HUD-RPi\prototype2_draft2.html"))
+        #view.load(QtCore.QUrl().fromLocalFile(os.path.split(os.path.abspath(__file__))[0]+r'C:\Users\yosef\Documents\GitHub\HUD-RPi\prototype2_draft2.html')) #C:\Users\yosef\Documents\GitHub\HUD-RPi\Testremove.html
       #  navitPath="C:\Users\yosef\Documents\GitHub\HUD-RPi\Removetest"
        # subprocess.Popen(navitPath)
         #window = QWindow.fromWinId(navWin)
@@ -263,6 +267,8 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         #self.setGeometry(500, 500, 450, 400)
         #self.setWindowTitle("Online Navigation")
         #self.mdiArea()
+
+       
 #########################################################################
 # switch screen handler & Navit
     def buttonHandler(self):
@@ -433,6 +439,7 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
 
 ############################################### For QA
 if __name__ == "__main__":
+    #sys.argv.append("--disable-web-security")
     app = QtWidgets.QApplication(sys.argv)
     gui_window = Ui_MainWindow()
     gui_window.showMaximized()
