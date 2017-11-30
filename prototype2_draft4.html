@@ -302,14 +302,14 @@
 			{
 
 				// Now use the map as required...
-				
+				/*
 				var SvgMarkup = '<svg width="18" height="18" ' +
 				'xmlns="http://www.w3.org/2000/svg">' +
 				'<circle cx="8" cy="8" r="8" ' +
 				'fill="red" stroke="white" stroke-width="1"  />' +
 				'</svg>',
 				dotIcon2 = new H.map.Icon(SvgMarkup, {anchor: {x:8, y:8}});
-
+				*/
 
 				var xhttp = new XMLHttpRequest();
 				xhttp.onreadystatechange = function (){
@@ -351,11 +351,23 @@
 						globalLng2 = currentlon;
 						//document.getElementById('posx').innerHTML=currentlat;
 						//document.getElementById('posy').innerHTML=currentlon;
-
+						/*
 						var custommarker =  new H.map.Marker({
 							lat: currentlat,
 							lng: currentlon} ,
 							{icon: dotIcon2});
+						*/
+						var custommarker =  new H.map.Circle(
+						{lat: currentlat, lng: currentlon} ,
+						10,
+						{
+						  style: {
+							strokeColor: 'red',
+							lineWidth: 2,
+							fillColor: 'blue'}
+						  
+						  
+						  });
 							
 							
 						console.log('custom marker created');
@@ -663,7 +675,7 @@
 			// Now use the map as required...
 			//calculateRouteFromAtoB(platform);
 			
-
+			/*
 			function addCircleToMap(map){
 			  map.addObject(new H.map.Circle(
 				// The central point of the circle
@@ -682,6 +694,7 @@
 			  
 			}
 			addCircleToMap(map);
+			*/
 			
 			function enableTrafficInfo (map) {
 			  // Center map to detroit
