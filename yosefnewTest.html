@@ -2,11 +2,13 @@
 <html>
 	<head>
 		<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 		<meta content="utf-8" http-equiv="encoding">
 		<title> WARRIOR HUD </title>
 		<!-- CSS Files -->
 		<link rel="stylesheet" type = "text/css" href="/css/onlineNav.css">
-	
+		<link rel="stylesheet" type="text/css" href="OnScreen Keyboard/css/style.css" />
+		
 		<!-- Bootstraps CDN -->
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
 		<!-- JS Files -->
@@ -17,28 +19,87 @@
 		<script type="text/javascript" src="https://js.cit.api.here.com/v3/3.0/mapsjs-service.js"></script>
 		<script type="text/javascript" src="https://js.cit.api.here.com/v3/3.0/mapsjs-ui.js"></script>
 		<script type="text/javascript" src="https://js.cit.api.here.com/v3/3.0/mapsjs-mapevents.js"></script>
+
 <style type="text/css">
 	border: 2px solid black;
 	-ms-transform: rotate(45deg); /*IE*/
 	-webkit-transform: rotate(45deg);/*Safari*/
 	transform: rotate(45deg); /*Standard*/
 </style>
-		
+
 	</head>
 	<body>
 		<div id="map" style="position:absolute; width:49%; height:100%; background:grey" ></div>
 		<div id="panel" style="position:absolute; width:49%; left:51%; height:100%; background:inherit" ></div>
 	
 		<div class="container">
-			<h2 id="text-center">Search Location: </h2>
 			<form>
-				<input type="text" id="locID" name="locID"/>
+				<textarea id="write" name="write" rows="2" cols="10" placeholder="Search Destination" onclick="showKeyboard()"></textarea>
 				<br>
-				<input type="button" value="loc" onclick="locFunc()"/>
-				<input type="button" value="route" onclick="calculateRouteFromAtoB(platform);"/>
-				<input type="button" id="test" value="clear"/>
+				<input type = "button" value ="Search" onclick= "locFunc()" />
+				<input type = "button" value ="X" onclick= />
 			</form>
+			<div id ="keyboard" style="display: none;">
+				<ul id="keyboard">
+					<li class="symbol"><span class="off">`</span><span class="on">~</span></li>
+					<li class="symbol"><span class="off">1</span><span class="on">!</span></li>
+					<li class="symbol"><span class="off">2</span><span class="on">@</span></li>
+					<li class="symbol"><span class="off">3</span><span class="on">#</span></li>
+					<li class="symbol"><span class="off">4</span><span class="on">$</span></li>
+					<li class="symbol"><span class="off">5</span><span class="on">%</span></li>
+					<li class="symbol"><span class="off">6</span><span class="on">^</span></li>
+					<li class="symbol"><span class="off">7</span><span class="on">&amp;</span></li>
+					<li class="symbol"><span class="off">8</span><span class="on">*</span></li>
+					<li class="symbol"><span class="off">9</span><span class="on">(</span></li>
+					<li class="symbol"><span class="off">0</span><span class="on">)</span></li>
+					<li class="symbol"><span class="off">-</span><span class="on">_</span></li>
+					<li class="symbol"><span class="off">=</span><span class="on">+</span></li>
+					<li class="delete lastitem">delete</li>
+					<li class="tab">tab</li>
+					<li class="letter">q</li>
+					<li class="letter">w</li>
+					<li class="letter">e</li>
+					<li class="letter">r</li>
+					<li class="letter">t</li>
+					<li class="letter">y</li>
+					<li class="letter">u</li>
+					<li class="letter">i</li>
+					<li class="letter">o</li>
+					<li class="letter">p</li>
+					<li class="symbol"><span class="off">[</span><span class="on">{</span></li>
+					<li class="symbol"><span class="off">]</span><span class="on">}</span></li>
+					<li class="symbol lastitem"><span class="off">\</span><span class="on">|</span></li>
+					<li class="capslock">caps lock</li>
+					<li class="letter">a</li>
+					<li class="letter">s</li>
+					<li class="letter">d</li>
+					<li class="letter">f</li>
+					<li class="letter">g</li>
+					<li class="letter">h</li>
+					<li class="letter">j</li>
+					<li class="letter">k</li>
+					<li class="letter">l</li>
+					<li class="symbol"><span class="off">;</span><span class="on">:</span></li>
+					<li class="symbol"><span class="off">'</span><span class="on">&quot;</span></li>
+					<li class="enter lastitem">enter</li>
+					<li class="left-shift">shift</li>
+					<li class="letter">z</li>
+					<li class="letter">x</li>
+					<li class="letter">c</li>
+					<li class="letter">v</li>
+					<li class="letter">b</li>
+					<li class="letter">n</li>
+					<li class="letter">m</li>
+					<li class="symbol"><span class="off">,</span><span class="on">&lt;</span></li>
+					<li class="symbol"><span class="off">.</span><span class="on">&gt;</span></li>
+					<li class="symbol"><span class="off">/</span><span class="on">?</span></li>
+					<li class="right-shift lastitem">shift</li>
+					<li class="space lastitem">&nbsp;</li>
+				</ul>
+			</div>
+
 		</div>
+
 		<script>
 			
 			var globalLat;
@@ -54,7 +115,14 @@
 			}
 			*/
 			
-				
+			<!-- function showKeyboard{ -->
+				<!-- document.getElementById('keyboard').style.display = visible; -->
+			<!-- } -->
+
+			<!-- function hideKeyboard{ -->
+				<!-- document.getElementById('keyboard').style.display = hidden; -->
+			<!-- } -->
+
 			function calculateRouteFromAtoB(platform) {
 			
 			car(map,cargroup);
@@ -217,7 +285,8 @@
 			//var location = document.getElementById("location-input").value;
 			
 			function locFunc(){
-			var location = document.getElementById("locID").value;
+			var location = document.getElementById("write").value;
+			alert(location);
 			geocode(location);
 			}
 			
@@ -532,6 +601,9 @@
 			
 			
 		</script>
+
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
+<script type="text/javascript" src="OnScreen Keyboard/js/keyboard.js"></script>
 	
 	</body>
 </html>

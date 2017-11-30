@@ -1,5 +1,6 @@
 $(function(){
 	var $write = $('#write'),
+		
 		shift = false,
 		capslock = false;
 		
