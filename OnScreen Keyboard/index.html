@@ -7,17 +7,15 @@
     <link rel="stylesheet" type="text/css" href="css/style.css" />
 </head>
 <body>
- <div class="container">
+<div id="container">
+    <!-- <textarea id="write" rows="6" cols="60"></textarea> -->
+	<!-- <input type="text" id="write" name="locID"/> -->
 			<h2 id="text-center">Search Location: </h2>
 			<form>
-				<input type="text" id="locID" name="locID"/>
+				<textarea id="write" name = "write" rows="2" cols="10"></textarea>
 				<br>
-				<input type="button" value="loc" onclick="locFunc()"/>
+				<input type="button" value="loc" onclick="func()"/>
 			</form>
-</div>
-<div id="container">
-     <textarea id="write" rows="6" cols="60" input type ="text" ></textarea> 
-	<!-- <input id = "write" type = "text" placeholder == "Search Destination"/> -->
     <ul id="keyboard">
         <li class="symbol"><span class="off">`</span><span class="on">~</span></li>
         <li class="symbol"><span class="off">1</span><span class="on">!</span></li>
@@ -79,9 +77,10 @@
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
 <script type="text/javascript" src="js/keyboard.js"></script>
 <script>
-function locFunc(){
-			var location = document.getElementById("locID").value;
-			alert(location);
-			} </script>
+	function func(){
+	var test = document.getElementById("write").value;
+	alert(test);
+	}
+</script>
 </body>
 </html>
