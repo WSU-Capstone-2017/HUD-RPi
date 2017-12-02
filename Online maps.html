@@ -550,8 +550,16 @@
 				  nodeOL.appendChild(li);
 				}
 			}
+			var panel = document.getElementById("panel");
+			var dir = document.getElementsByClass("directions");
 
-			routeInstructionsContainer.appendChild(nodeOL);
+			if(panel.contains(dir))
+			{
+				panel.removeChild(dir);
+				routeInstructionsContainer.appendChild(nodeOL);
+			}
+			else
+				routeInstructionsContainer.appendChild(nodeOL);
 		}
 
 
