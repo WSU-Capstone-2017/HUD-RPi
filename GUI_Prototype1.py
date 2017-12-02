@@ -5,11 +5,10 @@ import os
 import subprocess
 import urllib
 import webbrowser
+import obd
 
-#import obd
 
-
-from PyQt5 import QtCore, QtGui, QtWidgets, QtWebEngineWidgets
+from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_SplitWin(QtWidgets.QMainWindow):
     #  added parent
     def __init__(self, parent=None):
@@ -253,7 +252,11 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
 ###########################################################################
 #switch screen handler for Online Navigation
     def buttonHandler2(self):
-        webbrowser.open('filepath')
+        #webbrowser.open('http://127.0.0.1/prototype2_draft.html')
+        os.system("DISPLAY=:0 chromium-browser -kiosk http://127.0.0.1/prototype2_draft5.html")
+        #os.system("DISPLAY=:0 chromium-browser http://127.0.0.1/prototype2_draft5.html")
+
+      #  os.system("florence")
         #webView.load(QUrl(r"C:\Users\yosef\Documents\GitHub\HUD-RPi\prototype2_draft2.html"))
         #self.result = urllib2urlopen("file:///HUD-RPi\prototype2_draft2.html").read()
       #  cwd = os.getcwd()
@@ -305,9 +308,13 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
 ########################################### For QA
     
     def instrument_readings(self):
+        os.system("sudo rfcomm connect hci0 00:1d:a5:00:29:c0")
+        os.system("sudo chmod 777 /dev/ttyUSB0")
+        os.system("sudo chmod 777 /var/www/html")
+
         x = 0
       
-        connection = obd.OBD()
+        connection = obd.OBD("/dev/rfcomm0")
         
         rpmCmd = obd.commands.RPM
         speedCmd = obd.commands.SPEED
@@ -442,7 +449,7 @@ if __name__ == "__main__":
     #sys.argv.append("--disable-web-security")
     app = QtWidgets.QApplication(sys.argv)
     gui_window = Ui_MainWindow()
-    gui_window.showMaximized()
-    #gui_window.showFullScreen()
+    #gui_window.showMaximized()
+    gui_window.showFullScreen()
     sys.exit(app.exec_())
 ###############################################################
