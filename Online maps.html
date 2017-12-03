@@ -514,7 +514,17 @@
 				summaryDiv.style.fontSize = '17pt';
 				summaryDiv.style.marginLeft ='5%';
 				summaryDiv.style.marginRight ='5%';
+				summaryDiv.id = 'sum';
 				summaryDiv.innerHTML = content;
+
+
+			var sum = document.getElementById("sum");
+
+			if(routeInstructionsContainer.contains(sum))
+			{
+				routeInstructionsContainer.replaceChild(summaryDiv, sum);
+			}
+			else
 				routeInstructionsContainer.appendChild(summaryDiv);
 			}
 			
@@ -530,6 +540,7 @@
 				nodeOL.style.marginLeft ='0%';
 				nodeOL.style.marginRight ='0%';
 				nodeOL.className = 'directions';
+				nodeOL.id = 'dir';
 
 				 // Add a marker for each maneuver
 				 for (i = 0;  i < route.leg.length; i += 1) {
@@ -550,13 +561,13 @@
 				  nodeOL.appendChild(li);
 				}
 			}
-			var panel = document.getElementById("panel");
-			var dir = document.getElementsByClass("directions");
+			var panel = document.getElementById("dir");
+			
 
-			if(panel.contains(dir))
+			if(routeInstructionsContainer.contains(panel))
 			{
-				panel.removeChild(dir);
-				routeInstructionsContainer.appendChild(nodeOL);
+				routeInstructionsContainer.replaceChild(nodeOL, panel);
+				//routeInstructionsContainer.appendChild(nodeOL);
 			}
 			else
 				routeInstructionsContainer.appendChild(nodeOL);
