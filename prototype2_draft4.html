@@ -184,6 +184,8 @@
 		</div>
 		<script>
 			
+
+			
 			var globalLat;
 			var globalLng;
 			var globalLat2;
@@ -216,16 +218,43 @@
 			}
 			
 			function testreroute(){
+			var reroute;
+			reroute = setInterval(function(){rerouting();},8000);
 			
-			setInterval(function(){rerouting();},8000);
 			
+			document.getElementById("test").addEventListener("click", function(){
+			  clearInterval(reroute);
+			  routegroup.removeObject(routegroup.getObjects()[0]);
+			  enableTrafficInfo(map);
+			  
+			  var sum = document.getElementById("sum");
+			  routeInstructionsContainer.removeChild(sum);
+			  
+			  var dir = document.getElementById("dir");
+			  routeInstructionsContainer.removeChild(dir);
+			  
+			});
+			
+		
 			}
-				
+			
 			function calculateRouteFromAtoB(platform) {
 			
 			car(map,cargroup);
-			setInterval(function(){car(map, cargroup);},5000);
+			var carinterval;
+			carinterval = setInterval(function(){car(map, cargroup);},5000);
 			
+			document.getElementById("test").addEventListener("click", function(){
+			  clearInterval(carinterval);
+			  group.removeObject(group.getObjects()[0]);
+			  
+			  var sum = document.getElementById("sum");
+			  routeInstructionsContainer.removeChild(sum);
+			  
+			  var dir = document.getElementById("dir");
+			  routeInstructionsContainer.removeChild(dir);
+			  //enableTrafficInfo(map);
+			});
 			
 			//setInterval(function(){calculateRouteFromAtoB(platform);},8000);
 			//console.log("Calculating route");
@@ -252,8 +281,8 @@
 				  //var lat3 = 42.3314;
 				  //var lng3 = -83.048;
 				  
-				  //waypoint0: '42.3314,-83.0458', // Detroit
-				  waypoint0: globalLat2+','+globalLng2,
+				  waypoint0: '42.3314,-83.0458', // Detroit
+				  //waypoint0: globalLat2+','+globalLng2,
 				  //waypoint1: '42.4895,-83.1446'  // Royal Oak
 				  waypoint1: globalLat+','+globalLng
 				  //alert(globalLat + " " + globalLng);
@@ -289,7 +318,7 @@
 			  addRouteShapeToMap(route);
 			  addManueversToMap(route);
 
-			  addWaypointsToPanel(route.waypoint);
+			  //addWaypointsToPanel(route.waypoint);
 			  addManueversToPanel(route);
 			  addSummaryToPanel(route.summary);
 			  // ... etc.
@@ -593,6 +622,7 @@
 			  });
 			  
 			  
+			  
 			}
 			
 			
@@ -614,6 +644,9 @@
 
 			  routeInstructionsContainer.innerHTML = '';
 			  routeInstructionsContainer.appendChild(nodeH3);
+			  
+			  
+			  
 			}
 			
 			function addSummaryToPanel(summary){
@@ -629,7 +662,16 @@
 			  summaryDiv.style.marginLeft ='5%';
 			  summaryDiv.style.marginRight ='5%';
 			  summaryDiv.innerHTML = content;
+			  summaryDiv.id = 'sum';
 			  routeInstructionsContainer.appendChild(summaryDiv);
+			  /*
+			  document.getElementById("test").addEventListener("click", function(){
+			  var sum = document.getElementById("sum");
+			  routeInstructionsContainer.removeChild(sum);
+			
+			  });
+			  */
+			  
 			}
 			
 			function addManueversToPanel(route){
@@ -644,6 +686,7 @@
 			  nodeOL.style.marginLeft ='5%';
 			  nodeOL.style.marginRight ='5%';
 			  nodeOL.className = 'directions';
+			  nodeOL.id='dir';
 
 				 // Add a marker for each maneuver
 			  for (i = 0;  i < route.leg.length; i += 1) {
@@ -666,6 +709,8 @@
 			  }
 
 			  routeInstructionsContainer.appendChild(nodeOL);
+			  
+			  
 			}
 
 
