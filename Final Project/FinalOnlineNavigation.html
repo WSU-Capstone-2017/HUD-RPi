@@ -15,7 +15,18 @@
 		<script type="text/javascript" src="https://js.cit.api.here.com/v3/3.0/mapsjs-service.js"></script>
 		<script type="text/javascript" src="https://js.cit.api.here.com/v3/3.0/mapsjs-ui.js"></script>
 		<script type="text/javascript" src="https://js.cit.api.here.com/v3/3.0/mapsjs-mapevents.js"></script>
+
 <style type="text/css">
+.open {
+	margin-right: 10px;
+}
+.close {
+	margin-right: 10px;
+}
+
+.container {
+	margin-left: 10px;
+}
 body{
 			position: absolute;
 			width: 100%;
@@ -185,23 +196,35 @@ body{
 	</head>
 	<body>
 		<div id="map" style="position:absolute; width:100%; height:80%; background:grey" ></div>
+		
 		<div id="panel" style="position:absolute; bottom: 0; width:100%; height:25%; background:inherit" ></div>
-	
-		<div class="container">
-			<h2 id="text-center">Search Location: </h2>
-			<form>
-				<input type="text" id="locID" name="locID"/>
-				<br>
-				<input type="button" value="Search" onclick="locFunc()"/>
-				<input type="button" value="Route" onclick="testreroute()"/>
-				<input type="button" id="test" value="Clear"/>
-				<input type="button" value= "Close" id="close" onclick="closefunc()"/>
-			</form>
+		
+		<div class="close">
+			<input type="button" class = "btn-danger btn-sm" value= "X" align="right" id="close" onclick="closefunc()"/>
 		</div>
+		<div class="container" >
+		<form>
+				<input type="text" class="col-sm-6 span2" id="locID" name="locID" placeholder = "Search Destination" />
+				<br>
+				<input type="button" class = "btn-primary" value="Search" onclick="locFunc()"/>
+				<input type="button" class = "btn-primary" value="Route" onclick="testreroute()"/>
+				<input type="button" class = "btn-primary" id="test" value="Clear"/>
+		</form>
+						
+
+		</div>
+		
 		<script>
 			function closefunc()
 			{
-				window.open('','_self').close();
+				if (confirm("Would you like to return to the main screen?"))
+				{
+					window.open('','_self').close();
+				}
+				else{
+				//do nothing
+				}
+
 			}
 			var globalLat;
 			var globalLng;
