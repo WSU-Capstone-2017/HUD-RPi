@@ -195,11 +195,14 @@ body{
 				<input type="button" value="Search" onclick="locFunc()"/>
 				<input type="button" value="Route" onclick="testreroute()"/>
 				<input type="button" id="test" value="Clear"/>
-				<input type="button" value= "Close" id="close" onclick="window.close()"/>
+				<input type="button" value= "Close" id="close" onclick="closefunc()"/>
 			</form>
 		</div>
 		<script>
-			
+			function closefunc()
+			{
+				window.open('','_self').close();
+			}
 			var globalLat;
 			var globalLng;
 			var globalLat2;
@@ -233,15 +236,41 @@ body{
 			
 			function testreroute(){
 			
-			setInterval(function(){rerouting();},8000);
+			var reroute;
+			reroute = setInterval(function(){rerouting();},8000);
 			
+			
+			document.getElementById("test").addEventListener("click", function(){
+			  clearInterval(reroute);
+			  routegroup.removeObject(routegroup.getObjects()[0]);
+			  enableTrafficInfo(map);
+			  
+			  var sum = document.getElementById("sum");
+			  routeInstructionsContainer.removeChild(sum);
+			  
+			  var dir = document.getElementById("dir");
+			  routeInstructionsContainer.removeChild(dir);
+			  
+			});
 			}
 				
 			function calculateRouteFromAtoB(platform) {
 			
 			car(map,cargroup);
-			setInterval(function(){car(map, cargroup);},5000);
+			var carinterval;
+			carinterval = setInterval(function(){car(map, cargroup);},5000);
 			
+			document.getElementById("test").addEventListener("click", function(){
+			  clearInterval(carinterval);
+			  cargroup.removeObject(cargroup.getObjects()[0]);
+			  
+			  var sum = document.getElementById("sum");
+			  routeInstructionsContainer.removeChild(sum);
+			  
+			  var dir = document.getElementById("dir");
+			  routeInstructionsContainer.removeChild(dir);
+			  //enableTrafficInfo(map);
+			});
 			
 			//setInterval(function(){calculateRouteFromAtoB(platform);},8000);
 			//console.log("Calculating route");
@@ -268,8 +297,8 @@ body{
 				  //var lat3 = 42.3314;
 				  //var lng3 = -83.048;
 				  
-				  //waypoint0: '42.3314,-83.0458', // Detroit
-				  waypoint0: globalLat2+','+globalLng2,
+				  waypoint0: '42.3314,-83.0458', // Detroit
+				  //waypoint0: globalLat2+','+globalLng2,
 				  //waypoint1: '42.4895,-83.1446'  // Royal Oak
 				  waypoint1: globalLat+','+globalLng
 				  //alert(globalLat + " " + globalLng);
