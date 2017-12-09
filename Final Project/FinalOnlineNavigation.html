@@ -215,7 +215,7 @@ body{
 		</div>
 		
 		<script>
-			function closefunc()
+			function closefunc() //function to close the online Navigation
 			{
 				if (confirm("Would you like to return to the main screen?"))
 				{
@@ -233,23 +233,9 @@ body{
 			var cargroup = new H.map.Group();
 			var routegroup = new H.map.Group();
 			var pointsgroup = new H.map.Group();
-			/*
-			var routeGroup = H.map.Group(); //AK
-			function delRoute(map)
-			{
-				map.removeObject(routeGroup);
-			}
-			*/
 			
-			function rerouting(){
-			/*
-			if ((routegroup.getObjects()).length > 1)
-			{
+			function rerouting(){ //rerouting done by deleting the route and calculating new route
 			
-			  delRoute();
-			  console.log("Route Deleted");
-			 }
-			*/
 			 delRoute();
 			 console.log("Route Deleted");
 			 calculateRouteFromAtoB(platform);
@@ -260,30 +246,30 @@ body{
 			function testreroute(){
 			
 			var reroute;
-			reroute = setInterval(function(){rerouting();},8000);
+			reroute = setInterval(function(){rerouting();},8000); //setinterval for rerouting every 8 second
 			
 			
 			document.getElementById("test").addEventListener("click", function(){
 			  clearInterval(reroute);
-			  routegroup.removeObject(routegroup.getObjects()[0]);
+			  routegroup.removeObject(routegroup.getObjects()[0]); //remove previous route
 			  enableTrafficInfo(map);
 			  
-			  var sum = document.getElementById("sum");
+			  var sum = document.getElementById("sum");  //remove previous summary from panel
 			  routeInstructionsContainer.removeChild(sum);
 			  
-			  var dir = document.getElementById("dir");
+			  var dir = document.getElementById("dir"); //remove previous directions from panel
 			  routeInstructionsContainer.removeChild(dir);
 			  
 			});
 			}
 				
-			function calculateRouteFromAtoB(platform) {
+			function calculateRouteFromAtoB(platform) { //Calculating route function
 			
-			car(map,cargroup);
+			car(map,cargroup); //car function that represents the current position
 			var carinterval;
-			carinterval = setInterval(function(){car(map, cargroup);},5000);
+			carinterval = setInterval(function(){car(map, cargroup);},5000); //setinterval to get the current position every 5 seconds
 			
-			document.getElementById("test").addEventListener("click", function(){
+			document.getElementById("test").addEventListener("click", function(){ //clearing route when clear button clicked
 			  clearInterval(carinterval);
 			  cargroup.removeObject(cargroup.getObjects()[0]);
 			  
@@ -294,21 +280,7 @@ body{
 			  routeInstructionsContainer.removeChild(dir);
 			  //enableTrafficInfo(map);
 			});
-			
-			//setInterval(function(){calculateRouteFromAtoB(platform);},8000);
-			//console.log("Calculating route");
-			//setInterval(function(){delRoute();},7000);
-			//console.log("Deleted route");
-			
-
-
-			
-			/*//AK
-			if((routeGroup.getObjects()).length != 0)
-			{
-				delRoute(map);
-			}
-			*/
+	
 			  var router = platform.getRoutingService(),
 				routeRequestParams = {
 				  mode: 'fastest;car;traffic:enabled', //enabled traffic while routing
@@ -317,18 +289,14 @@ body{
 				  maneuverattributes: 'direction,action',
 				  language: 'en-us', // US format
 				  metricSystem: 'imperial', //changed metric system to miles and yards
-				  //var lat3 = 42.3314;
-				  //var lng3 = -83.048;
-				  
-				  waypoint0: '42.3314,-83.0458', // Detroit
-				  //waypoint0: globalLat2+','+globalLng2,
-				  //waypoint1: '42.4895,-83.1446'  // Royal Oak
+				
+				  //waypoint0: '42.3314,-83.0458', // Detroit hard coded longitude and latitude for testing navigation without RPi and GPS
+				  waypoint0: globalLat2+','+globalLng2,
+				  //waypoint1: '42.4895,-83.1446'  // Royal Oak 
 				  waypoint1: globalLat+','+globalLng
 				  //alert(globalLat + " " + globalLng);
-				  //console.log(globalLat);
 				  
 				};
-
 
 			  router.calculateRoute(
 				routeRequestParams,
@@ -336,22 +304,12 @@ body{
 				onError
 			  );
 			}
-			function delRoute(){
+			function delRoute(){ //function to delete previous route
 			if ((routegroup.getObjects()).length > 1){
 			  routegroup.removeObject(routegroup.getObjects()[0]);
 			  console.log("route removed");
 			  }
-			//var panel = document.getElementById("panel");
-			//var dir = document.getElementsByClassName("directions");
-			//panel.removeChild(dir);
-			  //map.removeObject(routegroup);
-			/*
-			if ((pointsgroup.getObjects()).length > 1){
-			  pointsgroup.removeObject(pointsgroup.getObjects()[0]);
-			  console.log("manouvers removed");
-			  }
-			*/
-			 //map.removeObject(pointsgroup);
+			
 			}
 			
 			function onSuccess(result) {
@@ -370,27 +328,14 @@ body{
 			  alert('Ooops!');
 			}
 			
-			function car(map,group)
+			function car(map,group) //car function that represents the current position. 
+			//It converts the longitude and latitude for pytest.py script to decimal numbers
 			{
-
-				// Now use the map as required...
-				/*
-				var SvgMarkup = '<svg width="18" height="18" ' +
-				'xmlns="http://www.w3.org/2000/svg">' +
-				'<circle cx="8" cy="8" r="8" ' +
-				'fill="red" stroke="white" stroke-width="1"  />' +
-				'</svg>',
-				dotIcon2 = new H.map.Icon(SvgMarkup, {anchor: {x:8, y:8}});
-				*/
 
 				var xhttp = new XMLHttpRequest();
 				xhttp.onreadystatechange = function (){
 					if(xhttp.readyState==4 & xhttp.status==200){ var pos = xhttp.responseText;
-						//document.getElementById('showplace').innerHTML = pos;
-
-						//var poslat= (Number(pos.slice(0,9)))/100;
-						//var poslong= (Number(pos.slice(14,24)))/100;
-
+						
 						var poslat= pos.slice(0,13);
 						var poslong= pos.slice(15,27);
 
@@ -419,17 +364,10 @@ body{
 						{
 							currentlon=lonDD+(lonMM/60);
 						}
-						globalLat2 = currentlat;
-						globalLng2 = currentlon;
-						//document.getElementById('posx').innerHTML=currentlat;
-						//document.getElementById('posy').innerHTML=currentlon;
-						/*
-						var custommarker =  new H.map.Marker({
-							lat: currentlat,
-							lng: currentlon} ,
-							{icon: dotIcon2});
-						*/
-						var custommarker =  new H.map.Circle(
+						globalLat2 = currentlat; //current position latitude
+						globalLng2 = currentlon; //current position longitude
+						
+						var custommarker =  new H.map.Circle( // create custommarker for car to dispaly on the map
 						{lat: currentlat, lng: currentlon} ,
 						10,
 						{
@@ -438,14 +376,10 @@ body{
 							lineWidth: 2,
 							fillColor: 'blue'}
 						  
-						  
 						  });
-							
 							
 						console.log('custom marker created');
 
-						
-						//map.addObject(custommarker);
 						console.log("put car on map");
 						map.setCenter({lat:currentlat, lng: currentlon});
 						map.setZoom(17);
@@ -454,48 +388,29 @@ body{
 						group.addObject(custommarker);
 						map.addObject(group);
 
-						//new google.maps.Marker({
-						//	position:new google.maps.LatLng(42.3314, -83.0458),
-						//	map: map
-						//	});
 					};
 				}
 				
-				xhttp.open("GET", "/cgi-bin/pytest.py", true);
+				xhttp.open("GET", "/cgi-bin/pytest.py", true); //http request to grab the current position using apache2
 				xhttp.send();
 				console.log("send");
 				console.log((group.getObjects()).length);
 				if((group.getObjects()).length > 1)
 				{
 					group.removeObject(group.getObjects()[0]);
-					//map.removeObjects();
+					
 				}
 
-				   //customgroup = new  H.map.Group();
-				   //customgroup.addObject(custommarker);
-
 				}
-				
-				
-			
 
-			//Get Location from form
-			//var location = document.getElementById("location-input").value;
-			
-			function locFunc(){
+			function locFunc(){ //search geo location function
 			var location = document.getElementById("locID").value;
 			geocode(location);
 			}
 			
-			//location.addEventListener('submit', geocode);
-			//geocode();
-			
-
 			
 			function geocode(loc1){
-			//alert(loc1);
-				//event.preventDefault();
-				//var location = '42 W Warren Ave Detroit MI';
+			
 			
 			//get api request. (Google Maps API)
 			
@@ -508,15 +423,6 @@ body{
 				.then(function(response){
 					//log full response
 					console.log(response);
-					<!-- var lat = response.data.results[0].geometry.location.lat; -->
-					<!-- var lng = response.data.results[0].geometry.location.lng; -->
-					<!-- var geometryOutput = ` -->
-						<!-- <ulclass ="list-group"> -->
-							<!-- <li class="list-group-item"><strong>Latitude</strong>:${lat}</li> -->
-							<!-- <li class="list-group-item"><strong>Longitude</strong>:${lng}</li> -->
-						<!-- </ul> -->
-						<!-- `; -->
-						<!-- document.getElementById('geometry').innerHTML = geometryOutput; -->
 						
 						var lat = response.data.results[0].geometry.location.lat;
 						var lng = response.data.results[0].geometry.location.lng;
@@ -524,7 +430,7 @@ body{
 						globalLat = lat;
 						globalLng = lng;
 						addMarkersToMap(map, lat, lng);
-						//calculateRouteFromAtoB(platform, lat, lng);
+						
 				})
 				.catch(function(error){
 					console.log(error);
@@ -532,14 +438,6 @@ body{
 					
 			}
 			
-
-			//geocode();
-			
-				//<input type="text" id="location-input" class="form-control form-control-lg">
-				//<br>
-				//<button type="submit" class="btn btn-primary btn-block">Submit</button>
-				
-				
 			////////////////////////////////////
 			var mapContainer = document.getElementById('map'),
 				routeInstructionsContainer = document.getElementById('panel');
@@ -582,7 +480,7 @@ body{
 			  }
 			}
 			
-			function addRouteShapeToMap(route){
+			function addRouteShapeToMap(route){ //function to add polyline for the route
 			  var lineString = new H.geo.LineString(),
 				routeShape = route.shape,
 				polyline;
@@ -601,9 +499,6 @@ body{
 			  
 			  routegroup.addObject(polyline); //AK
 			  map.addObject(routegroup);
-			  
-			  // Add the polyline to the map
-			//  map.addObject(polyline);
 
 			  // And zoom to its bounding rectangle
 			 // map.setViewBounds(polyline.getBounds(), true);
@@ -615,11 +510,10 @@ body{
 			  
 			  // And zoom to its bounding rectangle                     //This is to show the whole route before navigating .. implement it for different button functionality
 			//  map.setViewBounds(polyline.getBounds(), true);
-
 			}
 			
 			
-			function addManueversToMap(route){
+			function addManueversToMap(route){ 
 			  var svgMarkup = '<svg width="18" height="18" ' +
 				'xmlns="http://www.w3.org/2000/svg">' +
 				'<circle cx="8" cy="8" r="8" ' +
@@ -655,22 +549,16 @@ body{
 
 			  // Add the maneuvers group to the map
 			  
-			  //map.addObject(pointsgroup);
-			  
-			  
+			  //map.addObject(pointsgroup);		  
 			  document.getElementById("test").addEventListener("click", function(){
 			  map.removeObject(group);
 			
 			  });
 			  
-			  
 			}
-			
-			
-			
-			function addWaypointsToPanel(waypoints){
 
-
+			
+			function addWaypointsToPanel(waypoints){ //turn by turn panel
 
 			  var nodeH3 = document.createElement('h3'),
 				waypointLabels = [],
@@ -687,7 +575,7 @@ body{
 			  routeInstructionsContainer.appendChild(nodeH3);
 			}
 			
-			function addSummaryToPanel(summary){
+			function addSummaryToPanel(summary){ //summary panel
 			  var distanceToMile = summary.distance*(0.000621); // this is to convert travel distance from meters to miles
 			  var ditanceToDecimal = distanceToMile.toFixed(3); // this is to set the decimal numbers to 3
 			  var summaryDiv = document.createElement('div'),
@@ -711,12 +599,10 @@ body{
 			}
 			else
 				routeInstructionsContainer.appendChild(summaryDiv);
-			 // routeInstructionsContainer.appendChild(summaryDiv);
+			
 			}
 			
 			function addManueversToPanel(route){
-
-
 
 			  var nodeOL = document.createElement('ol'),
 				i,
@@ -747,55 +633,29 @@ body{
 				  nodeOL.appendChild(li);
 				}
 			  }
-			//var panel = document.getElementById("panel");
-			//var dir = document.getElementsByClassName("directions");
+			
 			var panel = document.getElementById("dir");
 
 			if(routeInstructionsContainer.contains(panel))
 			{
-				//panel.removeChild(dir);
+				
 				routeInstructionsContainer.replaceChild(nodeOL, panel);
 			}
 			else
 				routeInstructionsContainer.appendChild(nodeOL);
-			  //routeInstructionsContainer.appendChild(nodeOL);
+			  
 			}
-
 
 			Number.prototype.toMMSS = function () {
 			  return  Math.floor(this / 60)  +' minutes '+ (this % 60)  + ' seconds.';
 			}
 
-			// Now use the map as required...
-			//calculateRouteFromAtoB(platform);
 			
-			/*
-			function addCircleToMap(map){
-			  map.addObject(new H.map.Circle(
-				// The central point of the circle
-				
-				{lat:42.3314, lng:-83.0458},
-				// The radius of the circle in meters
-				10,
-				{
-				  style: {
-					strokeColor: 'red', // Color of the perimeter
-					lineWidth: 2,
-					fillColor: 'blue'  // Color of the circle
-				  }
-				}
-			  ));
-			  
-			}
-			addCircleToMap(map);
-			*/
-			
-			function enableTrafficInfo (map) {
+			function enableTrafficInfo (map) { // function to view traffic on map
 			  // Center map to detroit
 			  map.setCenter({lat: 42.3314, lng: -83.0458});
 			  map.setZoom(11);
 		
-
 			  // Show traffic tiles
 			  map.setBaseLayer(defaultLayers.normal.traffic);
 
@@ -804,22 +664,18 @@ body{
 			}
 			enableTrafficInfo(map);
 			
-			function addMarkersToMap(map, lat1, lng1) {
-			  //var destMarker = new H.map.Marker({lat:42.3314, lng:-83.0458});
+			function addMarkersToMap(map, lat1, lng1) { //function to add markers to the searched destination
 			  var destMarker = new H.map.Marker({lat:lat1, lng:lng1});
 			  map.addObject(destMarker);
 			  map.setCenter({lat:lat1, lng:lng1});
 			  map.setZoom(16);
 			 
-			  //alert(lat1 + " " + lng1);
 			  document.getElementById("test").addEventListener("click", function(){
 			  map.removeObject(destMarker);
 			
 			  });
 						  
-			}
-		//	addMarkersToMap(map, lat1, lng1);
-			
+			}			
 			
 		</script>
 	
