@@ -64,7 +64,6 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         self.setupUi(self)
         # when clicked
         self.pushButton1.clicked.connect(self.buttonHandler)
-       # self.pushButton2.clicked.connect(self.textbox)
         self.pushButton3.clicked.connect(self.buttonHandler2)
 
        
@@ -97,71 +96,60 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         self.speed_val.setDigitCount(3)
         self.speed_val.setProperty("intValue", 100)
         self.speed_val.setObjectName("speed_val")
-        ##
+        
         
         self.progressBar = QtWidgets.QProgressBar(self.centralwidget)
         self.progressBar.setGeometry(QtCore.QRect(520, 310, 90, 20))
-        #self.progressBar.setProperty("value", 100)
         self.progressBar.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.progressBar.setTextVisible(False)
         self.progressBar.setObjectName("progressBar")
 
         self.progressBar_2 = QtWidgets.QProgressBar(self.centralwidget)
         self.progressBar_2.setGeometry(QtCore.QRect(520, 280, 90, 20))
-        #self.progressBar_2.setProperty("value", 100)
         self.progressBar_2.setTextVisible(False)
         self.progressBar_2.setObjectName("progressBar_2")
 
         self.progressBar_3 = QtWidgets.QProgressBar(self.centralwidget)
         self.progressBar_3.setGeometry(QtCore.QRect(520, 250, 90, 20))
-        #self.progressBar_3.setProperty("value", 100)
         self.progressBar_3.setTextVisible(False)
         self.progressBar_3.setObjectName("progressBar_3")
         
         self.progressBar_4 = QtWidgets.QProgressBar(self.centralwidget)
         self.progressBar_4.setGeometry(QtCore.QRect(520, 220, 90, 20))
-        #self.progressBar_4.setProperty("value", 100)
         self.progressBar_4.setTextVisible(False)
         self.progressBar_4.setObjectName("progressBar_4")
 
         self.progressBar_5 = QtWidgets.QProgressBar(self.centralwidget)
         self.progressBar_5.setGeometry(QtCore.QRect(520, 190, 90, 20))
-        #self.progressBar_5.setProperty("value", 100)
         self.progressBar_5.setTextVisible(False)
         self.progressBar_5.setObjectName("progressBar_5")
 
         self.progressBar_6 = QtWidgets.QProgressBar(self.centralwidget)
         self.progressBar_6.setGeometry(QtCore.QRect(520, 160, 90, 20))
-        #self.progressBar_6.setProperty("value", 100)
         self.progressBar_6.setTextVisible(False)
         self.progressBar_6.setObjectName("progressBar_6")
 
         self.progressBar_7 = QtWidgets.QProgressBar(self.centralwidget)
         self.progressBar_7.setGeometry(QtCore.QRect(520, 130, 90, 20))
-        #self.progressBar_7.setProperty("value", 100)
         self.progressBar_7.setTextVisible(False)
         self.progressBar_7.setObjectName("progressBar_7")
 
         self.progressBar_8 = QtWidgets.QProgressBar(self.centralwidget)
         self.progressBar_8.setGeometry(QtCore.QRect(520, 100, 90, 20))
-        #self.progressBar_8.setProperty("value", 100)
         self.progressBar_8.setTextVisible(False)
         self.progressBar_8.setObjectName("progressBar_8")
 
         self.progressBar_9 = QtWidgets.QProgressBar(self.centralwidget)
         self.progressBar_9.setGeometry(QtCore.QRect(520, 70, 90, 20))
-        #self.progressBar_9.setProperty("value", 100)
         self.progressBar_9.setTextVisible(False)
         self.progressBar_9.setObjectName("progressBar_9")
 
         self.progressBar_10 = QtWidgets.QProgressBar(self.centralwidget)
         self.progressBar_10.setGeometry(QtCore.QRect(520, 40, 90, 20))
-        #self.progressBar_10.setProperty("value", 100)
         self.progressBar_10.setTextVisible(False)
         self.progressBar_10.setObjectName("progressBar_10")
 
         
-        ##
         self.speed = QtWidgets.QLabel(self.centralwidget)
         self.speed.setGeometry(QtCore.QRect(140, 160, 150, 31))#MPH font 90, 110, 141, 31
         font = QtGui.QFont()
@@ -237,11 +225,12 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
-        test = self.alert_reading()
+        
+        test = self.alert_reading() #Display Check engine message
         self.textEdit.setText(test)
         print test
 ##################################################### For QA
-        th = Thread(target=self.instrument_readings)
+        th = Thread(target=self.instrument_readings) #Thread
         th.start()
 ##################################################################
 
@@ -255,51 +244,17 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
 
         self.pushButton3.setText(_translate("MainWindow", "Online NAV"))        
         self.pushButton1.setText(_translate("MainWindow", "NavIT"))
-        self.pushButton2.setText(_translate("MainWindow", "View Alerts"))
+        self.pushButton2.setText(_translate("MainWindow", "Alerts"))
 ###########################################################################
 #switch screen handler for Online Navigation
     def buttonHandler2(self):
-        #webbrowser.open('http://127.0.0.1/prototype2_draft.html')
         os.system("DISPLAY=:0 chromium-browser -kiosk http://127.0.0.1/FinalOnlineNavigation.html")
         #os.system("DISPLAY=:0 chromium-browser http://127.0.0.1/prototype2_draft5.html")
 
-      #  os.system("florence")
-        #webView.load(QUrl(r"C:\Users\yosef\Documents\GitHub\HUD-RPi\prototype2_draft2.html"))
-        #self.result = urllib2urlopen("file:///HUD-RPi\prototype2_draft2.html").read()
-      #  cwd = os.getcwd()
-     #   view = QtWebEngineWidgets.QWebEngineView()
-       # self.view.load(QUrl.fromLocalFile(cwd+"\\HUD-RPi\prototype2_draft2.html"))
-        #view.load(QtCore.QUrl().fromLocalFile(os.path.split(os.path.abspath(__file__))[0]+r'C:\Users\yosef\Documents\GitHub\HUD-RPi\prototype2_draft2.html')) #C:\Users\yosef\Documents\GitHub\HUD-RPi\Testremove.html
-      #  navitPath="C:\Users\yosef\Documents\GitHub\HUD-RPi\Removetest"
-       # subprocess.Popen(navitPath)
-        #window = QWindow.fromWinId(navWin)
-        #self.createWindowContainer(window,self)
-        #self.setGeometry(500, 500, 450, 400)
-        #self.setWindowTitle("Online Navigation")
-        #self.mdiArea()
-
        
 #########################################################################
-# switch screen handler & Navit
+# switch screen handler for Navit
     def buttonHandler(self):
-##        import navit
-##        navit.config_load("navit.xml.local")
-##        pos=navit.pcoord("5023.7493 N 00730.2898 E",1);
-##        dest=navit.pcoord("5023.6604 N 00729.8500 E",1);
-##        inst=navit.config().navit();
-##        inst.set_position(pos);
-##        inst.set_destination(dest,"Test");
-##        inst.set_center(pos);
-
-##        QApplication(self)
-##        QWidget.__init__(self)
-##        self.resize(200,200)
-##        self.process =QProcess(self)
-##        self.terminal =QWidget(self)
-##        layout = QVBoxLayout(self)
-##        layout.addWidget("navit")
-    
-            
 
         
         navitPath= "navit"#"/usr/share/applications/navit.desktop"
@@ -310,8 +265,7 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         self.setWindowTitle("Navigation")
         self.mdiArea() #show()
         #os.system('navit')
-     #   window = Ui_SplitWin(self)
-     #   window.show()
+    
 ########################################### For QA
     def alert_reading(self):
         global alertDis
@@ -333,24 +287,17 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         speedCmd = obd.commands.SPEED
         fuelCmd = obd.commands.FUEL_LEVEL
 
-    #    milecmd = obd.commands.DISTANCE_W_MIL
-        
-        
-      #  self.alerts_val.setText("Test")
-
         while True:
            
             fuelResponse = connection.query(fuelCmd)
             rpmResponse = connection.query(rpmCmd)
             speedResponse = connection.query(speedCmd)
 
-            #mile_resp = connection.query(milecmd)
             
             fuelString = str(fuelResponse.value).split()
             rpmString = str(rpmResponse.value).split()
             speedString = str(speedResponse.value).split()
 
-            #mile_str = str(mile_resp.value).split()
 
             if fuelString[0] != "None":
                 fuel = float(fuelString[0])
@@ -429,37 +376,12 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
                 rpm = float(rpmString[0])
                 self.rpm_val.display(rpm)
 
-            #if mile_str[0] != "None":
-            #    mile = float(mile_str[0]) * 0.62137
-             #   self.mileage_val.display(mile)
 
-  # view alert button          
-   # def textbox(self):
-     #   connection = obd.OBD()
-        
-     #   alertcmd = obd.commands.GET_DTC
-     #   alert_resp = connection.query(alertcmd)
-      #  alert_str = str(alert_resp.value)
-      #  self.textEdit.setText(alert_str)
-
-
-     #   if alert_str[0] == "None":
-        #    noMsg = alert_str[0]
-        #    self.textEdit.setText(noMsg)
-       # if alert_str[0]!= "None":
-        #    msg = alert_str[0]
-         #   self.textEdit.setText(msg)
-
-        
-
-
-                                     
 ####################################################################        
         
 
 ############################################### For QA
 if __name__ == "__main__":
-    #sys.argv.append("--disable-web-security")
     app = QtWidgets.QApplication(sys.argv)
     gui_window = Ui_MainWindow()
     #gui_window.showMaximized()
